@@ -78,12 +78,14 @@ public class Game extends JFrame implements GLEventListener{
 	public void display(GLAutoDrawable drawable) {
 		GL2 gl = drawable.getGL().getGL2();
 		gl.glClearColor(0,0,0,1);
-	    
-		gl.glMatrixMode(GL2.GL_PROJECTION);
-		gl.glLoadIdentity();
-		gl.glOrtho(-10, 10, -10, 10, 0, -10);
 		
+		//gluLookAt must be called under modelview matrix
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
+		gl.glLoadIdentity();
+		GLU glu = new GLU();
+		glu.gluLookAt(0, 0, 1, 0, 0, 0, 0, 1, 0);
+		
+		myTerrain.init(gl);	
 		myTerrain.draw(gl,data);	
 	}
 
@@ -96,9 +98,6 @@ public class Game extends JFrame implements GLEventListener{
 	@Override
 	public void init(GLAutoDrawable drawable) {
 		GL2 gl = drawable.getGL().getGL2();
-		GLU glu = new GLU();
-		glu.gluLookAt(2, 2, 3, 0, 0, 0, 0, 1, 0);
-		myTerrain.init(gl);	
 		gl.glEnable(GL2.GL_LIGHTING);
 	    gl.glEnable(GL2.GL_LIGHT0);
 	}
@@ -106,7 +105,16 @@ public class Game extends JFrame implements GLEventListener{
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
 			int height) {
-		// TODO Auto-generated method stub
+		GL2 gl = drawable.getGL().getGL2();
 		
+		gl.glMatrixMode(GL2.GL_PROJECTION);
+		gl.glLoadIdentity();
+		gl.glOrtho(-10, 10, -10, 10, 0, -10);
+		
+		/*gl.glMatrixMode(GL2.GL_PROJECTION);
+		gl.glLoadIdentity();
+		GLU glu = new GLU();
+		glu.gluPerspective(20, width/height,1, 12);*/
+		gl.glMatrixMode(GL2.GL_MODELVIEW);
 	}
 }
