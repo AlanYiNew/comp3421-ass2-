@@ -216,6 +216,7 @@ public class Terrain {
 		gl.glTexCoordPointer(2, GL2.GL_FLOAT, 0,
 				(terrainPositions.length + terrainNormals.length) * Float.BYTES);
 
+		
 		// Draw triangles with each Mesh having 3 vertices
 		gl.glDrawArrays(GL2.GL_TRIANGLES, 0, numOfMesh * 3);
 
@@ -230,7 +231,7 @@ public class Terrain {
 
 	// Must be called in the init state
 	public void init(GL2 gl) {
-		gl.glEnable(GL2.GL_TEXTURE_2D);
+		//gl.glEnable(GL2.GL_TEXTURE_2D);
 
 		// Texture setting
 		myTexture = new MyTexture(gl, "grass.jpg", "jpg", true);
@@ -266,28 +267,29 @@ public class Terrain {
 				float[] v2 = { 0,
 						(float) (myAltitude[i][j + 1] - myAltitude[i][j]), 1 };
 				float[] n = MathUtil.crossProduct(v2, v1);
+				n = MathUtil.normalise(n);
 
 				// top left triangle of the mesh
 				terrainNormals[curr] = n[0];
-				terrainPositions[curr++] = i;
-				terrainNormals[curr] = n[1];
-				terrainPositions[curr++] = (float) myAltitude[i][j];
-				terrainNormals[curr] = n[2];
-				terrainPositions[curr++] = j;
-
-				terrainNormals[curr] = n[0];
-				terrainPositions[curr++] = i + 1;
-				terrainNormals[curr] = n[1];
-				terrainPositions[curr++] = (float) myAltitude[i + 1][j];
-				terrainNormals[curr] = n[2];
-				terrainPositions[curr++] = j;
-
-				terrainNormals[curr] = n[0];
-				terrainPositions[curr++] = i;
+				terrainPositions[curr++] = i - 4.5f;
 				terrainNormals[curr] = n[1];
 				terrainPositions[curr++] = (float) myAltitude[i][j + 1];
 				terrainNormals[curr] = n[2];
-				terrainPositions[curr++] = j + 1;
+				terrainPositions[curr++] = j + 1 - 4.5f;
+
+				terrainNormals[curr] = n[0];
+				terrainPositions[curr++] = i + 1 - 4.5f;
+				terrainNormals[curr] = n[1];
+				terrainPositions[curr++] = (float) myAltitude[i + 1][j];
+				terrainNormals[curr] = n[2];
+				terrainPositions[curr++] = j - 5;
+				
+				terrainNormals[curr] = n[0];
+				terrainPositions[curr++] = i-4.5f;
+				terrainNormals[curr] = n[1];
+				terrainPositions[curr++] = (float) myAltitude[i][j];
+				terrainNormals[curr] = n[2];
+				terrainPositions[curr++] = j-5;
 
 				// normal for bottom right triangle of the mesh
 				float[] v3 = { -1,
@@ -298,28 +300,27 @@ public class Terrain {
 						(float) (myAltitude[i + 1][j + 1] - myAltitude[i + 1][j]),
 						1 };
 				n = MathUtil.crossProduct(v3, v4);
-
+				n = MathUtil.normalise(n);
 				// bottom right triangle of the mesh
 				terrainNormals[curr] = n[0];
-				terrainPositions[curr++] = i + 1;
+				terrainPositions[curr++] = i + 1 - 4.5f;
 				terrainNormals[curr] = n[1];
 				terrainPositions[curr++] = (float) myAltitude[i + 1][j];
 				terrainNormals[curr] = n[2];
-				terrainPositions[curr++] = j;
-
+				terrainPositions[curr++] = j - 4.5f;
 				terrainNormals[curr] = n[0];
-				terrainPositions[curr++] = i;
+				terrainPositions[curr++] = i - 4.5f;
 				terrainNormals[curr] = n[1];
 				terrainPositions[curr++] = (float) myAltitude[i][j + 1];
 				terrainNormals[curr] = n[2];
-				terrainPositions[curr++] = j + 1;
+				terrainPositions[curr++] = j + 1 - 4.5f;
 
 				terrainNormals[curr] = n[0];
-				terrainPositions[curr++] = i + 1;
+				terrainPositions[curr++] = i + 1 - 4.5f;
 				terrainNormals[curr] = n[1];
 				terrainPositions[curr++] = (float) myAltitude[i + 1][j + 1];
 				terrainNormals[curr] = n[2];
-				terrainPositions[curr++] = j + 1;
+				terrainPositions[curr++] = j + 1 - 4.5f;
 			}
 		}
 

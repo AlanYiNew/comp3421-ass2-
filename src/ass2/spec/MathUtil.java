@@ -8,4 +8,10 @@ public class MathUtil {
 		val[2] = v1[0] * v2[1] - v1[1] * v2[0];
 		return val;		
 	}
+	
+	public static float[] normalise(float[] v){
+		float length = (float) Math.sqrt(v[0]*v[0] + v[1]*v[1] + v[2]*v[2]);
+		float val[] = {v[0]/length,v[1]/length,v[2]/length};
+		return val;
+	}
 }
