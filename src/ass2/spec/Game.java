@@ -97,7 +97,7 @@ public class Game extends JFrame implements GLEventListener{
 	public void init(GLAutoDrawable drawable) {
 		GL2 gl = drawable.getGL().getGL2();
 		GLU glu = new GLU();
-		glu.gluLookAt(1, 3, 5, 0, 0, 0, 0, 1, 0);
+		glu.gluLookAt(2, 2, 3, 0, 0, 0, 0, 1, 0);
 		myTerrain.init(gl);	
 		gl.glEnable(GL2.GL_LIGHTING);
 	    gl.glEnable(GL2.GL_LIGHT0);
