@@ -198,7 +198,7 @@ public class Terrain {
 		// Enable two vertex arrays: coordinates and color.
 		// To tell the graphics pipeline that we want it to use our vertex
 		// position and color data
-		
+
 		gl.glEnableClientState(GL2.GL_VERTEX_ARRAY);
 		gl.glEnableClientState(GL2.GL_NORMAL_ARRAY);
 		gl.glEnableClientState(GL2.GL_TEXTURE_COORD_ARRAY);
@@ -213,16 +213,10 @@ public class Terrain {
 				* Float.BYTES); // colors are found after the position
 		// co-ordinates in the current array buffer
 
-		gl.glTexCoordPointer(2,GL2.GL_FLOAT, 0, (terrainPositions.length + terrainNormals.length) * Float.BYTES);
+		gl.glTexCoordPointer(2, GL2.GL_FLOAT, 0,
+				(terrainPositions.length + terrainNormals.length) * Float.BYTES);
 
-<<<<<<< HEAD
-		
-		// Draw triangles with each Mesh having 3 vertices
-=======
-		// Draw triangles, using 6 vertices, starting at vertex index 0
->>>>>>> parent of 28ef19f... second commit
 		gl.glDrawArrays(GL2.GL_TRIANGLES, 0, numOfMesh * 3);
-		
 
 		// Disable these. Not needed in this example, but good practice.
 		gl.glDisableClientState(GL2.GL_VERTEX_ARRAY);
@@ -236,20 +230,12 @@ public class Terrain {
 
 	// Must be called in the init state
 	public void init(GL2 gl) {
-<<<<<<< HEAD
-		//gl.glEnable(GL2.GL_TEXTURE_2D);
 
 		// Texture setting
 		myTexture = new MyTexture(gl, "grass.jpg", "jpg", true);
-=======
-		gl.glEnable(GL2.GL_TEXTURE_2D);
->>>>>>> parent of 28ef19f... second commit
-		
-		//Texture setting
-		myTexture = new MyTexture(gl,"grass.jpg","jpg",true);
-		gl.glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_MODULATE); 
-		
-		
+		gl.glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE,
+				GL2.GL_MODULATE);
+
 		terrainPositions = new float[(int) (numOfMesh * 3 * 3)];
 		terrainNormals = new float[(int) (numOfMesh * 3 * 3)];
 		textureCoordinates = new float[(int) (numOfMesh * 3 * 2)];
@@ -289,13 +275,13 @@ public class Terrain {
 				terrainPositions[curr++] = (float) myAltitude[i + 1][j];
 				terrainNormals[curr] = n[2];
 				terrainPositions[curr++] = j - 5;
-				
+
 				terrainNormals[curr] = n[0];
-				terrainPositions[curr++] = i-4.5f;
+				terrainPositions[curr++] = i - 4.5f;
 				terrainNormals[curr] = n[1];
 				terrainPositions[curr++] = (float) myAltitude[i][j];
 				terrainNormals[curr] = n[2];
-				terrainPositions[curr++] = j-5;
+				terrainPositions[curr++] = j - 5;
 
 				// normal for bottom right triangle of the mesh
 				float[] v3 = { -1,
@@ -341,14 +327,17 @@ public class Terrain {
 		// array buffers hold vertex attribute data
 		gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, bufferIds[0]);
 
-		gl.glBufferData(GL2.GL_ARRAY_BUFFER, (terrainPositions.length + terrainNormals.length + textureCoordinates.length)* Float.BYTES, null,
-				GL2.GL_STATIC_DRAW);
+		gl.glBufferData(GL2.GL_ARRAY_BUFFER, (terrainPositions.length
+				+ terrainNormals.length + textureCoordinates.length)
+				* Float.BYTES, null, GL2.GL_STATIC_DRAW);
 		gl.glBufferSubData(GL2.GL_ARRAY_BUFFER, 0, terrainPositions.length
 				* Float.BYTES, posData);
 		gl.glBufferSubData(GL2.GL_ARRAY_BUFFER, terrainPositions.length
 				* Float.BYTES, terrainNormals.length * Float.BYTES, normalData);
-		gl.glBufferSubData(GL2.GL_ARRAY_BUFFER, (terrainPositions.length + terrainNormals.length)
-				* Float.BYTES, textureCoordinates.length * Float.BYTES, textureData);
+		gl.glBufferSubData(
+				GL2.GL_ARRAY_BUFFER,
+				(terrainPositions.length + terrainNormals.length) * Float.BYTES,
+				textureCoordinates.length * Float.BYTES, textureData);
 	}
 
 	public int[] getBufferIds() {
