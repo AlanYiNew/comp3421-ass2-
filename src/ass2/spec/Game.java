@@ -28,14 +28,14 @@ public class Game extends JFrame implements GLEventListener, KeyListener {
 
 	private Terrain myTerrain;
 	private TextureData data;
-	private float camPos[];
-	private float camLookAt[];
+	private double camPos[];
+	private double camLookAt[];
 
 	public Game(Terrain terrain) {
 		super("Assignment 2");
 		myTerrain = terrain;
-		camPos = new float[] { 0, 1, 2 };
-		camLookAt = new float[] { 0, 0, 0 };
+		camPos = new double[] { 0, 2, 1 };
+		camLookAt = new double[] { 0, 0, 0 };
 	}
 
 	/**

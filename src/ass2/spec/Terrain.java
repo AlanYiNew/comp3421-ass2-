@@ -1,22 +1,11 @@
 package ass2.spec;
 
 import java.awt.Dimension;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Reader;
-import java.nio.FloatBuffer;
+import java.nio.DoubleBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import com.jogamp.common.nio.Buffers;
 import com.jogamp.opengl.util.texture.TextureData;
@@ -35,12 +24,12 @@ public class Terrain {
 	private float[] mySunlight;
 	private int[] bufferIds = new int[1];
 	private int numOfMesh;
-	FloatBuffer posData;
-	FloatBuffer normalData;
-	FloatBuffer textureData;
-	float terrainPositions[];
-	float terrainNormals[];
-	float textureCoordinates[];
+	DoubleBuffer posData;
+	DoubleBuffer normalData;
+	DoubleBuffer textureData;
+	double terrainPositions[];
+	double terrainNormals[];
+	double textureCoordinates[];
 	MyTexture myTexture;
 
 	/**
@@ -206,15 +195,15 @@ public class Terrain {
 		// This tells OpenGL the locations for the co-ordinates and color
 		// arrays.
 		gl.glVertexPointer(3, // 3 coordinates per vertex
-				GL2.GL_FLOAT, // each co-ordinate is a float
+				GL2.GL_DOUBLE, // each co-ordinate is a float
 				0, // There are no gaps in data between co-ordinates
 				0); // Co-ordinates are at the start of the current array buffer
-		gl.glNormalPointer(GL2.GL_FLOAT, 0, terrainPositions.length
-				* Float.BYTES); // colors are found after the position
+		gl.glNormalPointer(GL2.GL_DOUBLE, 0, terrainPositions.length
+				* Double.BYTES); // colors are found after the position
 		// co-ordinates in the current array buffer
 
-		gl.glTexCoordPointer(2, GL2.GL_FLOAT, 0,
-				(terrainPositions.length + terrainNormals.length) * Float.BYTES);
+		gl.glTexCoordPointer(2, GL2.GL_DOUBLE, 0,
+				(terrainPositions.length + terrainNormals.length) * Double.BYTES);
 
 		gl.glDrawArrays(GL2.GL_TRIANGLES, 0, numOfMesh * 3);
 
@@ -236,9 +225,9 @@ public class Terrain {
 		gl.glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE,
 				GL2.GL_MODULATE);
 
-		terrainPositions = new float[(int) (numOfMesh * 3 * 3)];
-		terrainNormals = new float[(int) (numOfMesh * 3 * 3)];
-		textureCoordinates = new float[(int) (numOfMesh * 3 * 2)];
+		terrainPositions = new double[(int) (numOfMesh * 3 * 3)];
+		terrainNormals = new double[(int) (numOfMesh * 3 * 3)];
+		textureCoordinates = new double[(int) (numOfMesh * 3 * 2)];
 		int curr = 0;
 
 		for (int i = 0; i < numOfMesh * 3 * 2; i += 6) {
@@ -254,71 +243,71 @@ public class Terrain {
 			for (int j = 0; j < (int) mySize.getHeight() - 1; j++) {
 
 				// normal for top left triangle of the mesh
-				float[] v1 = { 1,
-						(float) (myAltitude[i + 1][j] - myAltitude[i][j]), 0 };
-				float[] v2 = { 0,
-						(float) (myAltitude[i][j + 1] - myAltitude[i][j]), 1 };
-				float[] n = MathUtil.crossProduct(v2, v1);
+				double[] v1 = { 1,
+						(myAltitude[i + 1][j] - myAltitude[i][j]), 0 };
+				double[] v2 = { 0,
+						(myAltitude[i][j + 1] - myAltitude[i][j]), 1 };
+				double[] n = MathUtil.crossProduct(v2, v1);
 				n = MathUtil.normalise(n);
 
 				// top left triangle of the mesh
 				terrainNormals[curr] = n[0];
-				terrainPositions[curr++] = i - 4.5f;
+				terrainPositions[curr++] = i - 4.5;
 				terrainNormals[curr] = n[1];
-				terrainPositions[curr++] = (float) myAltitude[i][j + 1];
+				terrainPositions[curr++] = myAltitude[i][j + 1];
 				terrainNormals[curr] = n[2];
-				terrainPositions[curr++] = j + 1 - 4.5f;
+				terrainPositions[curr++] = j + 1 - 4.5;
 
 				terrainNormals[curr] = n[0];
-				terrainPositions[curr++] = i + 1 - 4.5f;
+				terrainPositions[curr++] = i + 1 - 4.5;
 				terrainNormals[curr] = n[1];
-				terrainPositions[curr++] = (float) myAltitude[i + 1][j];
+				terrainPositions[curr++] = myAltitude[i + 1][j];
 				terrainNormals[curr] = n[2];
 				terrainPositions[curr++] = j - 5;
 
 				terrainNormals[curr] = n[0];
-				terrainPositions[curr++] = i - 4.5f;
+				terrainPositions[curr++] = i - 4.5;
 				terrainNormals[curr] = n[1];
-				terrainPositions[curr++] = (float) myAltitude[i][j];
+				terrainPositions[curr++] = myAltitude[i][j];
 				terrainNormals[curr] = n[2];
 				terrainPositions[curr++] = j - 5;
 
 				// normal for bottom right triangle of the mesh
-				float[] v3 = { -1,
-						(float) (myAltitude[i][j + 1] - myAltitude[i + 1][j]),
+				double[] v3 = { -1,
+						 (myAltitude[i][j + 1] - myAltitude[i + 1][j]),
 						1 };
-				float[] v4 = {
+				double[] v4 = {
 						0,
-						(float) (myAltitude[i + 1][j + 1] - myAltitude[i + 1][j]),
+						(myAltitude[i + 1][j + 1] - myAltitude[i + 1][j]),
 						1 };
 				n = MathUtil.crossProduct(v3, v4);
 				n = MathUtil.normalise(n);
 				// bottom right triangle of the mesh
 				terrainNormals[curr] = n[0];
-				terrainPositions[curr++] = i + 1 - 4.5f;
+				terrainPositions[curr++] = i + 1 - 4.5;
 				terrainNormals[curr] = n[1];
-				terrainPositions[curr++] = (float) myAltitude[i + 1][j];
+				terrainPositions[curr++] = myAltitude[i + 1][j];
 				terrainNormals[curr] = n[2];
-				terrainPositions[curr++] = j - 4.5f;
+				terrainPositions[curr++] = j - 4.5;
 				terrainNormals[curr] = n[0];
-				terrainPositions[curr++] = i - 4.5f;
+				terrainPositions[curr++] = i - 4.5;
 				terrainNormals[curr] = n[1];
-				terrainPositions[curr++] = (float) myAltitude[i][j + 1];
+				terrainPositions[curr++] = myAltitude[i][j + 1];
 				terrainNormals[curr] = n[2];
-				terrainPositions[curr++] = j + 1 - 4.5f;
+				terrainPositions[curr++] = j + 1 - 4.5;
 
 				terrainNormals[curr] = n[0];
-				terrainPositions[curr++] = i + 1 - 4.5f;
+				terrainPositions[curr++] = i + 1 - 4.5;
 				terrainNormals[curr] = n[1];
-				terrainPositions[curr++] = (float) myAltitude[i + 1][j + 1];
+				terrainPositions[curr++] = myAltitude[i + 1][j + 1];
 				terrainNormals[curr] = n[2];
-				terrainPositions[curr++] = j + 1 - 4.5f;
+				terrainPositions[curr++] = j + 1 - 4.5;
 			}
 		}
 
-		posData = Buffers.newDirectFloatBuffer(terrainPositions);
-		normalData = Buffers.newDirectFloatBuffer(terrainNormals);
-		textureData = Buffers.newDirectFloatBuffer(textureCoordinates);
+		posData = Buffers.newDirectDoubleBuffer(terrainPositions);
+		normalData = Buffers.newDirectDoubleBuffer(terrainNormals);
+		textureData = Buffers.newDirectDoubleBuffer(textureCoordinates);
 
 		// Generate 1 VBO buffer and get its ID
 		gl.glGenBuffers(1, bufferIds, 0);
@@ -329,15 +318,15 @@ public class Terrain {
 
 		gl.glBufferData(GL2.GL_ARRAY_BUFFER, (terrainPositions.length
 				+ terrainNormals.length + textureCoordinates.length)
-				* Float.BYTES, null, GL2.GL_STATIC_DRAW);
+				* Double.BYTES, null, GL2.GL_STATIC_DRAW);
 		gl.glBufferSubData(GL2.GL_ARRAY_BUFFER, 0, terrainPositions.length
-				* Float.BYTES, posData);
+				* Double.BYTES, posData);
 		gl.glBufferSubData(GL2.GL_ARRAY_BUFFER, terrainPositions.length
-				* Float.BYTES, terrainNormals.length * Float.BYTES, normalData);
+				* Double.BYTES, terrainNormals.length * Double.BYTES, normalData);
 		gl.glBufferSubData(
 				GL2.GL_ARRAY_BUFFER,
-				(terrainPositions.length + terrainNormals.length) * Float.BYTES,
-				textureCoordinates.length * Float.BYTES, textureData);
+				(terrainPositions.length + terrainNormals.length) * Double.BYTES,
+				textureCoordinates.length * Double.BYTES, textureData);
 	}
 
 	public int[] getBufferIds() {
