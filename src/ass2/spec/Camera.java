@@ -11,7 +11,7 @@ public class Camera {
 	private float aspectRatio;
 	public void setFocus(float x,float y, float z){
 		focus = new float[]{x,y,z};
-		pos = new float[]{x,y+1,z-1};
+		pos = new float[]{x,y+1,z-4};
 	}
 	
 	public float[] getPos() {
@@ -34,12 +34,12 @@ public class Camera {
 	
 	public void setCamera(GL2 gl){
 		GLU glu = new GLU();
+		gl.glMatrixMode(GL2.GL_MODELVIEW);
+		gl.glLoadIdentity();	
 		glu.gluLookAt(pos[0], pos[1], pos[2], focus[0], focus[1], focus[2], 0, 1, 0);
 		gl.glMatrixMode(GL2.GL_PROJECTION);
 		gl.glLoadIdentity();
 		glu.gluPerspective(90, aspectRatio, 1, 10);
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
-		System.out.println(pos[0] + " " + pos[1] +" " +pos[2]);
-		System.out.println(focus[0] + " " + focus[1] +" " +focus[2]);
 	}
 }

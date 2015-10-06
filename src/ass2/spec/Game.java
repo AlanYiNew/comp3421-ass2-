@@ -36,7 +36,7 @@ public class Game extends JFrame implements GLEventListener{
         float x = 0;
         float z = 0;
         float offSet[] = terrain.getOffset();
-        float y = (float)myTerrain.altitude(x+offSet[0], z+offSet[1]); 
+        float y = (float)myTerrain.altitude(x+offSet[1], z+offSet[0]); 
         camera.setFocus(x,y,z);
     }
     
@@ -86,10 +86,6 @@ public class Game extends JFrame implements GLEventListener{
 		gl.glClearColor(0,0,0,1);
 		
 		//gluLookAt must be called under modelview matrix
-		gl.glMatrixMode(GL2.GL_MODELVIEW);
-		gl.glLoadIdentity();
-		GLU glu = new GLU();
-		glu.gluLookAt(0, 6, 5, 0, 0, 0, 0, 1, 0);
 		setUpMaterialt(gl);
 		camera.setCamera(gl);
 		myTerrain.init(gl);	
