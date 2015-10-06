@@ -124,7 +124,7 @@ public class Game extends JFrame implements GLEventListener{
 		gl.glLightfv(GL2.GL_LIGHT0,GL2.GL_AMBIENT,lightAmb,0);
 		
 		gl.glLightModelfv(GL2.GL_LIGHT_MODEL_AMBIENT,gloAmb,0);
-		//gl.glLightModeli(GL2.GL_LIGHT_MODEL_TWO_SIDE,GL2.GL_TRUE);
+		gl.glLightModeli(GL2.GL_LIGHT_MODEL_TWO_SIDE,GL2.GL_TRUE);
 	}
 	
 	private void setUpMaterialt(GL2 gl) {

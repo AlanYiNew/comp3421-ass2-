@@ -280,18 +280,18 @@ public class Terrain {
 				terrainPositions[curr++] = j - lengthoffset;
 
 				terrainNormals[curr] = n[0];
-				terrainPositions[curr++] = i + 1 - widthoffset;
-				terrainNormals[curr] = n[1];
-				terrainPositions[curr++] = (float) myAltitude[i + 1][j];
-				terrainNormals[curr] = n[2];
-				terrainPositions[curr++] = j - lengthoffset;
-
-				terrainNormals[curr] = n[0];
 				terrainPositions[curr++] = i - widthoffset;
 				terrainNormals[curr] = n[1];
 				terrainPositions[curr++] = (float) myAltitude[i][j + 1];
 				terrainNormals[curr] = n[2];
 				terrainPositions[curr++] = j + 1 - lengthoffset;
+				
+				terrainNormals[curr] = n[0];
+				terrainPositions[curr++] = i + 1 - widthoffset;
+				terrainNormals[curr] = n[1];
+				terrainPositions[curr++] = (float) myAltitude[i + 1][j];
+				terrainNormals[curr] = n[2];
+				terrainPositions[curr++] = j - lengthoffset;
 
 				// normal for bottom right triangle of the mesh
 				float[] v3 = { -1,
