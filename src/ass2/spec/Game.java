@@ -28,10 +28,16 @@ public class Game extends JFrame implements GLEventListener{
 
     private Terrain myTerrain;
     private TextureData data;
+    private Camera camera;
     public Game(Terrain terrain) {
     	super("Assignment 2");
         myTerrain = terrain;
-   
+        camera = new Camera();
+        float x = 0;
+        float z = 0;
+        float offSet[] = terrain.getOffset();
+        float y = (float)myTerrain.altitude(x+offSet[0], z+offSet[1]); 
+        camera.setFocus(x,y,z);
     }
     
     /** 
@@ -85,6 +91,7 @@ public class Game extends JFrame implements GLEventListener{
 		GLU glu = new GLU();
 		glu.gluLookAt(0, 6, 5, 0, 0, 0, 0, 1, 0);
 		setUpMaterialt(gl);
+		camera.setCamera(gl);
 		myTerrain.init(gl);	
 		myTerrain.draw(gl,data);	
 	}
@@ -105,7 +112,7 @@ public class Game extends JFrame implements GLEventListener{
 	}
 
 	private void setUpLight(GL2 gl) {
-		float lightPos[] =  {0,3,3,1};
+		float lightPos[] =  {0,3,-5,1};
 		float lightAmb[] = {0,0,0,1};
 		float lightDiff[] = {1.0f,1.0f,1.0f,1};
 		float lightSpec[] = {1.0f,1.0f,1.0f,1};
@@ -117,7 +124,7 @@ public class Game extends JFrame implements GLEventListener{
 		gl.glLightfv(GL2.GL_LIGHT0,GL2.GL_AMBIENT,lightAmb,0);
 		
 		gl.glLightModelfv(GL2.GL_LIGHT_MODEL_AMBIENT,gloAmb,0);
-		gl.glLightModeli(GL2.GL_LIGHT_MODEL_TWO_SIDE,GL2.GL_TRUE);
+		//gl.glLightModeli(GL2.GL_LIGHT_MODEL_TWO_SIDE,GL2.GL_TRUE);
 	}
 	
 	private void setUpMaterialt(GL2 gl) {
@@ -139,15 +146,17 @@ public class Game extends JFrame implements GLEventListener{
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
 			int height) {
 		GL2 gl = drawable.getGL().getGL2();
-		
+		camera.setAspect(1.0f * width/height);
 		/*gl.glMatrixMode(GL2.GL_PROJECTION);
 		gl.glLoadIdentity();
 		gl.glOrtho(-10, 10, -10, 10, 0, -10);*/
 		
-		gl.glMatrixMode(GL2.GL_PROJECTION);
+		/*gl.glMatrixMode(GL2.GL_PROJECTION);
 		gl.glLoadIdentity();
 		GLU glu = new GLU();
-		glu.gluPerspective(120, 1.0*width/height,1, 12);
-		gl.glMatrixMode(GL2.GL_MODELVIEW);
+		glu.gluPerspective(90, 1.0*width/height,1, 12);
+		gl.glMatrixMode(GL2.GL_MODELVIEW);*/
+		
+		
 	}
 }
