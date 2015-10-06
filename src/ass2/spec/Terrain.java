@@ -61,8 +61,8 @@ public class Terrain {
 		mySunlight = new float[3];
 		numOfMesh = (width - 1) * (depth - 1) * 2;
 		bufferIds = new int[1];
-		widthoffset = (width - 1)/2;
-		lengthoffset = (depth - 1)/2;
+		widthoffset = (width - 1.0f)/2;
+		lengthoffset = (depth - 1.0f)/2;
 	}
 
 	public Terrain(Dimension size) {
