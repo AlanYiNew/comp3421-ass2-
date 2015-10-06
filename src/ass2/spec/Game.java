@@ -142,17 +142,6 @@ public class Game extends JFrame implements GLEventListener{
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
 			int height) {
 		GL2 gl = drawable.getGL().getGL2();
-		camera.setAspect(1.0f * width/height);
-		/*gl.glMatrixMode(GL2.GL_PROJECTION);
-		gl.glLoadIdentity();
-		gl.glOrtho(-10, 10, -10, 10, 0, -10);*/
-		
-		/*gl.glMatrixMode(GL2.GL_PROJECTION);
-		gl.glLoadIdentity();
-		GLU glu = new GLU();
-		glu.gluPerspective(90, 1.0*width/height,1, 12);
-		gl.glMatrixMode(GL2.GL_MODELVIEW);*/
-		
-		
+		camera.setAspect(1.0f * width/height);	
 	}
 }
