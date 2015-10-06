@@ -83,8 +83,8 @@ public class Game extends JFrame implements GLEventListener{
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
 		gl.glLoadIdentity();
 		GLU glu = new GLU();
-		glu.gluLookAt(0, 0, 1, 0, 0, 0, 0, 1, 0);
-		
+		glu.gluLookAt(0, 6, 5, 0, 0, 0, 0, 1, 0);
+		setUpMaterialt(gl);
 		myTerrain.init(gl);	
 		myTerrain.draw(gl,data);	
 	}
@@ -100,21 +100,54 @@ public class Game extends JFrame implements GLEventListener{
 		GL2 gl = drawable.getGL().getGL2();
 		gl.glEnable(GL2.GL_LIGHTING);
 	    gl.glEnable(GL2.GL_LIGHT0);
+	    gl.glEnable(GL2.GL_DEPTH_TEST);
+	    setUpLight(gl);
 	}
+
+	private void setUpLight(GL2 gl) {
+		float lightPos[] =  {0,3,3,1};
+		float lightAmb[] = {0,0,0,1};
+		float lightDiff[] = {1.0f,1.0f,1.0f,1};
+		float lightSpec[] = {1.0f,1.0f,1.0f,1};
+		float gloAmb[] = {1.0f,0.0f,0.0f,1.0f};
+		
+		gl.glLightfv(GL2.GL_LIGHT0,GL2.GL_POSITION,lightPos,0);
+		gl.glLightfv(GL2.GL_LIGHT0,GL2.GL_DIFFUSE,lightDiff,0);
+		gl.glLightfv(GL2.GL_LIGHT0,GL2.GL_SPECULAR,lightSpec,0);
+		gl.glLightfv(GL2.GL_LIGHT0,GL2.GL_AMBIENT,lightAmb,0);
+		
+		gl.glLightModelfv(GL2.GL_LIGHT_MODEL_AMBIENT,gloAmb,0);
+		gl.glLightModeli(GL2.GL_LIGHT_MODEL_TWO_SIDE,GL2.GL_TRUE);
+	}
+	
+	private void setUpMaterialt(GL2 gl) {
+		float matShine[] =  {70};
+		float lightAmb[] = {0,0,0,1};
+		float lightDiff[] = {1.0f,1.0f,1.0f,1};
+		float lightSpec[] = {1.0f,1.0f,1.0f,1};
+		float gloAmb[] = {0.0f,0.0f,0.0f,1.0f};
+		
+		gl.glMaterialfv(GL2.GL_FRONT_AND_BACK,GL2.GL_SHININESS,matShine,0);
+		gl.glMaterialfv(GL2.GL_FRONT_AND_BACK,GL2.GL_DIFFUSE,lightDiff,0);
+		gl.glMaterialfv(GL2.GL_FRONT_AND_BACK,GL2.GL_SPECULAR,lightSpec,0);
+		gl.glMaterialfv(GL2.GL_FRONT_AND_BACK,GL2.GL_AMBIENT,lightAmb,0);
+	}
+	
+	
 
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
 			int height) {
 		GL2 gl = drawable.getGL().getGL2();
 		
-		gl.glMatrixMode(GL2.GL_PROJECTION);
-		gl.glLoadIdentity();
-		gl.glOrtho(-10, 10, -10, 10, 0, -10);
-		
 		/*gl.glMatrixMode(GL2.GL_PROJECTION);
 		gl.glLoadIdentity();
+		gl.glOrtho(-10, 10, -10, 10, 0, -10);*/
+		
+		gl.glMatrixMode(GL2.GL_PROJECTION);
+		gl.glLoadIdentity();
 		GLU glu = new GLU();
-		glu.gluPerspective(20, width/height,1, 12);*/
+		glu.gluPerspective(120, 1.0*width/height,1, 12);
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
 	}
 }

@@ -269,7 +269,7 @@ public class Terrain {
 						(float) (myAltitude[i + 1][j] - myAltitude[i][j]), 0 };
 				float[] v2 = { 0,
 						(float) (myAltitude[i][j + 1] - myAltitude[i][j]), 1 };
-				float[] n = MathUtil.crossProduct(v2, v1);
+				float[] n = MathUtil.crossProduct(v1, v2);
 
 				// top left triangle of the mesh
 				terrainNormals[curr] = n[0];
