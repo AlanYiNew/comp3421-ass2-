@@ -196,7 +196,7 @@ public class Terrain {
 	}
 
 	public void draw(GL2 gl, TextureData data) {
-
+		gl.glEnable(GL2.GL_TEXTURE_2D);
 		// Bind the buffer we want to use
 		gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, bufferIds[0]);
 
@@ -230,11 +230,12 @@ public class Terrain {
 
 		// Unbind the buffer.
 		gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);
+		gl.glDisable(GL2.GL_TEXTURE_2D);
 	}
 
 	// Must be called in the init state
 	public void init(GL2 gl) {
-		gl.glEnable(GL2.GL_TEXTURE_2D);
+
 
 		// Texture setting
 		myTexture = new MyTexture(gl, "grass.jpg", "jpg", true);

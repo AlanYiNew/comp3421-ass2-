@@ -1,5 +1,7 @@
 package ass2.spec;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -24,20 +26,24 @@ import com.jogamp.opengl.util.texture.TextureIO;
  *
  * @author malcolmr
  */
-public class Game extends JFrame implements GLEventListener{
+public class Game extends JFrame implements GLEventListener, KeyListener{
 
     private Terrain myTerrain;
     private TextureData data;
     private Camera camera;
+    private Avatar teapot;
     public Game(Terrain terrain) {
     	super("Assignment 2");
-        myTerrain = terrain;
-        camera = new Camera();
+    	myTerrain = terrain;
+    	
         float x = 0;
         float z = 0;
         float offSet[] = terrain.getOffset();
         float y = (float)myTerrain.altitude(x+offSet[1], z+offSet[0]); 
-        camera.setFocus(x,y,z);
+
+        teapot = new Avatar(0,myTerrain.altitude(offSet[1],offSet[0]),0,myTerrain);
+        camera = new Camera(teapot,myTerrain);
+
     }
     
     /** 
@@ -56,6 +62,7 @@ public class Game extends JFrame implements GLEventListener{
           GLCapabilities caps = new GLCapabilities(glp);
           GLJPanel panel = new GLJPanel();
           panel.addGLEventListener(this);
+          panel.addKeyListener(this);
  
           // Add an animator to call 'display' at 60fps        
           FPSAnimator animator = new FPSAnimator(60);
@@ -83,13 +90,16 @@ public class Game extends JFrame implements GLEventListener{
 	@Override
 	public void display(GLAutoDrawable drawable) {
 		GL2 gl = drawable.getGL().getGL2();
-		gl.glClearColor(0,0,0,1);
+		gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
 		
 		//gluLookAt must be called under modelview matrix
-		setUpMaterialt(gl);
-		camera.setCamera(gl);
+
 		myTerrain.init(gl);	
+		camera.setCamera(gl);
+		setUpLight(gl);
 		myTerrain.draw(gl,data);	
+		teapot.draw(gl);
+		
 	}
 
 	@Override
@@ -104,15 +114,17 @@ public class Game extends JFrame implements GLEventListener{
 		gl.glEnable(GL2.GL_LIGHTING);
 	    gl.glEnable(GL2.GL_LIGHT0);
 	    gl.glEnable(GL2.GL_DEPTH_TEST);
-	    setUpLight(gl);
+	    /*gl.glEnable(GL2.GL_CULL_FACE);
+	    gl.glCullFace(GL2.GL_BACK);*/
 	}
 
 	private void setUpLight(GL2 gl) {
-		float lightPos[] =  {0,3,-5,1};
+		//float lightPos[] =  {camera.getPos()[0],camera.getPos()[1],camera.getPos()[2],1};
+		float lightPos[] = {0,10,0,1};
 		float lightAmb[] = {0,0,0,1};
 		float lightDiff[] = {1.0f,1.0f,1.0f,1};
 		float lightSpec[] = {1.0f,1.0f,1.0f,1};
-		float gloAmb[] = {1.0f,0.0f,0.0f,1.0f};
+		float gloAmb[] = {0.0f,0.0f,0.0f,1.0f};
 		
 		gl.glLightfv(GL2.GL_LIGHT0,GL2.GL_POSITION,lightPos,0);
 		gl.glLightfv(GL2.GL_LIGHT0,GL2.GL_DIFFUSE,lightDiff,0);
@@ -120,21 +132,10 @@ public class Game extends JFrame implements GLEventListener{
 		gl.glLightfv(GL2.GL_LIGHT0,GL2.GL_AMBIENT,lightAmb,0);
 		
 		gl.glLightModelfv(GL2.GL_LIGHT_MODEL_AMBIENT,gloAmb,0);
-		gl.glLightModeli(GL2.GL_LIGHT_MODEL_TWO_SIDE,GL2.GL_TRUE);
+	    gl.glLightModeli(GL2.GL_LIGHT_MODEL_TWO_SIDE,GL2.GL_TRUE);
 	}
 	
-	private void setUpMaterialt(GL2 gl) {
-		float matShine[] =  {70};
-		float lightAmb[] = {0,0,0,1};
-		float lightDiff[] = {1.0f,1.0f,1.0f,1};
-		float lightSpec[] = {1.0f,1.0f,1.0f,1};
-		float gloAmb[] = {0.0f,0.0f,0.0f,1.0f};
-		
-		gl.glMaterialfv(GL2.GL_FRONT_AND_BACK,GL2.GL_SHININESS,matShine,0);
-		gl.glMaterialfv(GL2.GL_FRONT_AND_BACK,GL2.GL_DIFFUSE,lightDiff,0);
-		gl.glMaterialfv(GL2.GL_FRONT_AND_BACK,GL2.GL_SPECULAR,lightSpec,0);
-		gl.glMaterialfv(GL2.GL_FRONT_AND_BACK,GL2.GL_AMBIENT,lightAmb,0);
-	}
+
 	
 	
 
@@ -143,5 +144,35 @@ public class Game extends JFrame implements GLEventListener{
 			int height) {
 		GL2 gl = drawable.getGL().getGL2();
 		camera.setAspect(1.0f * width/height);	
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		switch(e.getKeyCode()){
+		case KeyEvent.VK_UP:
+			teapot.vmove(0.1);
+			break;
+		case KeyEvent.VK_DOWN:
+			teapot.vmove(-0.1);
+			break;
+		case KeyEvent.VK_LEFT:
+			teapot.rotate(-0.1);
+			break;
+		case KeyEvent.VK_RIGHT:
+			teapot.rotate(0.1);
+			break;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }
