@@ -124,7 +124,8 @@ public class Game extends JFrame implements GLEventListener, KeyListener{
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
 			int height) {
 		GL2 gl = drawable.getGL().getGL2();
-		camera.setAspect(1.0f * width/height);	
+		camera.setAspect(1.0f * width/height);
+		myTerrain.init(gl);
 	}
 
 	@Override
