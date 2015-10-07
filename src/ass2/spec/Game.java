@@ -32,6 +32,7 @@ public class Game extends JFrame implements GLEventListener, KeyListener{
     private TextureData data;
     private Camera camera;
     private Avatar teapot;
+    private Light light;
     public Game(Terrain terrain) {
     	super("Assignment 2");
     	myTerrain = terrain;
@@ -43,7 +44,7 @@ public class Game extends JFrame implements GLEventListener, KeyListener{
 
         teapot = new Avatar(0,myTerrain.altitude(offSet[1],offSet[0]),0,myTerrain);
         camera = new Camera(teapot,myTerrain);
-
+        light = new Light();
     }
     
     /** 
@@ -94,12 +95,12 @@ public class Game extends JFrame implements GLEventListener, KeyListener{
 		
 		//gluLookAt must be called under modelview matrix
 
-		myTerrain.init(gl);	
+		//myTerrain.init(gl);	
 		camera.setCamera(gl);
-		setUpLight(gl);
+		light.setUpLight(gl);
 		myTerrain.draw(gl,data);	
+		light.draw(gl);
 		teapot.draw(gl);
-		
 	}
 
 	@Override
@@ -114,30 +115,10 @@ public class Game extends JFrame implements GLEventListener, KeyListener{
 		gl.glEnable(GL2.GL_LIGHTING);
 	    gl.glEnable(GL2.GL_LIGHT0);
 	    gl.glEnable(GL2.GL_DEPTH_TEST);
+	    myTerrain.init(gl);
 	    /*gl.glEnable(GL2.GL_CULL_FACE);
 	    gl.glCullFace(GL2.GL_BACK);*/
 	}
-
-	private void setUpLight(GL2 gl) {
-		//float lightPos[] =  {camera.getPos()[0],camera.getPos()[1],camera.getPos()[2],1};
-		float lightPos[] = {0,10,0,1};
-		float lightAmb[] = {0,0,0,1};
-		float lightDiff[] = {1.0f,1.0f,1.0f,1};
-		float lightSpec[] = {1.0f,1.0f,1.0f,1};
-		float gloAmb[] = {0.0f,0.0f,0.0f,1.0f};
-		
-		gl.glLightfv(GL2.GL_LIGHT0,GL2.GL_POSITION,lightPos,0);
-		gl.glLightfv(GL2.GL_LIGHT0,GL2.GL_DIFFUSE,lightDiff,0);
-		gl.glLightfv(GL2.GL_LIGHT0,GL2.GL_SPECULAR,lightSpec,0);
-		gl.glLightfv(GL2.GL_LIGHT0,GL2.GL_AMBIENT,lightAmb,0);
-		
-		gl.glLightModelfv(GL2.GL_LIGHT_MODEL_AMBIENT,gloAmb,0);
-	    gl.glLightModeli(GL2.GL_LIGHT_MODEL_TWO_SIDE,GL2.GL_TRUE);
-	}
-	
-
-	
-	
 
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
@@ -166,6 +147,12 @@ public class Game extends JFrame implements GLEventListener, KeyListener{
 			break;
 		case KeyEvent.VK_RIGHT:
 			teapot.rotate(0.1);
+			break;
+		case KeyEvent.VK_Q:
+			teapot.look(0.1);
+			break;
+		case KeyEvent.VK_E:
+			teapot.look(-0.1);
 			break;
 		}
 	}

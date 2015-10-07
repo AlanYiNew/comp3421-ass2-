@@ -10,6 +10,11 @@ public class Camera {
 	private float focus[] = null;
 	private float aspectRatio;
 	
+	private final float NEAR = 0.1f;
+	private final float FAR = 10f;
+	private final float fovy = 90;
+	
+	
 	public Avatar avatar;
 	public Terrain terrain;
 	
@@ -42,12 +47,12 @@ public class Camera {
 		target = avatar.getFront();
 		
 		float eyeX = (float) (pos[0] - target[0]);
-		float eyeY = (float) (pos[1] + 1);
+		float eyeY = (float) (pos[1] + avatar.getEye());
 		float eyeZ = (float) (pos[2] - target[2]);
 		
 		float centerX = (float)(pos[0] + target[0]);
 		float centerZ = (float)(pos[2] + target[2]);
-		float centerY = (float) terrain.altitude(centerX + terrain.getOffset()[0], centerZ+terrain.getOffset()[1]);
+		float centerY = (float)(pos[1] - avatar.getEye());
 		
 		GLU glu = new GLU();
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
@@ -55,7 +60,7 @@ public class Camera {
 		glu.gluLookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, 0, 1, 0);
 		gl.glMatrixMode(GL2.GL_PROJECTION);
 		gl.glLoadIdentity();
-		glu.gluPerspective(90, aspectRatio, 0.1, 10);
+		glu.gluPerspective(fovy, aspectRatio, NEAR, FAR);
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
 	}
 }

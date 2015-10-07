@@ -41,8 +41,8 @@ public class Terrain {
 	float terrainPositions[];
 	float terrainNormals[];
 	float textureCoordinates[];
-	float widthoffset;
-	float lengthoffset;
+	float X_OFFSET;
+	float Z_OFFSET;
 	MyTexture myTexture;
 
 	/**
@@ -61,8 +61,8 @@ public class Terrain {
 		mySunlight = new float[3];
 		numOfMesh = (width - 1) * (depth - 1) * 2;
 		bufferIds = new int[1];
-		widthoffset = (width - 1.0f)/2;
-		lengthoffset = (depth - 1.0f)/2;
+		X_OFFSET = (width - 1.0f)/2;
+		Z_OFFSET = (depth - 1.0f)/2;
 	}
 
 	public Terrain(Dimension size) {
@@ -274,25 +274,25 @@ public class Terrain {
 
 				// top left triangle of the mesh
 				terrainNormals[curr] = n[0];
-				terrainPositions[curr++] = i - widthoffset;
+				terrainPositions[curr++] = i - X_OFFSET;
 				terrainNormals[curr] = n[1];
 				terrainPositions[curr++] = (float) myAltitude[i][j];
 				terrainNormals[curr] = n[2];
-				terrainPositions[curr++] = j - lengthoffset;
+				terrainPositions[curr++] = j - Z_OFFSET;
 
 				terrainNormals[curr] = n[0];
-				terrainPositions[curr++] = i - widthoffset;
+				terrainPositions[curr++] = i - X_OFFSET;
 				terrainNormals[curr] = n[1];
 				terrainPositions[curr++] = (float) myAltitude[i][j + 1];
 				terrainNormals[curr] = n[2];
-				terrainPositions[curr++] = j + 1 - lengthoffset;
+				terrainPositions[curr++] = j + 1 - Z_OFFSET;
 				
 				terrainNormals[curr] = n[0];
-				terrainPositions[curr++] = i + 1 - widthoffset;
+				terrainPositions[curr++] = i + 1 - X_OFFSET;
 				terrainNormals[curr] = n[1];
 				terrainPositions[curr++] = (float) myAltitude[i + 1][j];
 				terrainNormals[curr] = n[2];
-				terrainPositions[curr++] = j - lengthoffset;
+				terrainPositions[curr++] = j - Z_OFFSET;
 
 				// normal for bottom right triangle of the mesh
 				float[] v3 = { -1,
@@ -306,25 +306,25 @@ public class Terrain {
 
 				// bottom right triangle of the mesh
 				terrainNormals[curr] = n[0];
-				terrainPositions[curr++] = i + 1 - widthoffset;
+				terrainPositions[curr++] = i + 1 - X_OFFSET;
 				terrainNormals[curr] = n[1];
 				terrainPositions[curr++] = (float) myAltitude[i + 1][j];
 				terrainNormals[curr] = n[2];
-				terrainPositions[curr++] = j - lengthoffset;
+				terrainPositions[curr++] = j - Z_OFFSET;
 
 				terrainNormals[curr] = n[0];
-				terrainPositions[curr++] = i - widthoffset;
+				terrainPositions[curr++] = i - X_OFFSET;
 				terrainNormals[curr] = n[1];
 				terrainPositions[curr++] = (float) myAltitude[i][j + 1];
 				terrainNormals[curr] = n[2];
-				terrainPositions[curr++] = j + 1 - lengthoffset;
+				terrainPositions[curr++] = j + 1 - Z_OFFSET;
 
 				terrainNormals[curr] = n[0];
-				terrainPositions[curr++] = i + 1 - widthoffset;
+				terrainPositions[curr++] = i + 1 - X_OFFSET;
 				terrainNormals[curr] = n[1];
 				terrainPositions[curr++] = (float) myAltitude[i + 1][j + 1];
 				terrainNormals[curr] = n[2];
-				terrainPositions[curr++] = j + 1 - lengthoffset;
+				terrainPositions[curr++] = j + 1 - Z_OFFSET;
 			}
 		}
 
@@ -364,6 +364,6 @@ public class Terrain {
 	}
 	
 	public float[] getOffset(){
-		return new float[]{widthoffset,lengthoffset};
+		return new float[]{X_OFFSET,Z_OFFSET};
 	}
 }

@@ -9,7 +9,12 @@ public class Avatar {
 	private double[] front;
 	private double[] side;
 	private double angle = 90;
+	private double eye = 1;
 	private Terrain terrain;
+	
+	private static float POSITION_OFFSET = 0.4f;
+	private static float ROTATE_MARGIN = 90;
+	private static float AVATAR_RATIO = 0.3f;
 	
 	public Avatar(double x, double y, double z,Terrain terrain){
 		pos = new double[] {x,y,z};
@@ -21,11 +26,11 @@ public class Avatar {
 	public void draw(GL2 gl){
 		gl.glPushMatrix();
 		{
-			gl.glTranslated(pos[0],pos[1]+ 0.4,pos[2]);
+			gl.glTranslated(pos[0],pos[1]+ POSITION_OFFSET,pos[2]);
 			gl.glRotated(Math.toDegrees(angle),0,1,0);
 			GLUT glut = new GLUT();
 			gl.glFrontFace(GL2.GL_CW);
-			glut.glutSolidTeapot(0.5);
+			glut.glutSolidTeapot(AVATAR_RATIO);
 			gl.glFrontFace(GL2.GL_CCW);
 		}
 		gl.glPopMatrix();
@@ -56,8 +61,16 @@ public class Avatar {
 		this.angle -= angle;
 		front[0] = Math.cos(this.angle);
 		front[2] = -Math.sin(this.angle);
-		side[0] = Math.cos(this.angle - 90);
-		side[2] = - Math.sin(this.angle - 90);
+		
+		side[0] = Math.cos(this.angle - ROTATE_MARGIN);
+		side[2] = - Math.sin(this.angle - ROTATE_MARGIN);
+	}
+	
+	public void look(double direction){
+		if(this.eye + direction > 1 || this.eye + direction < -1)
+			return;
+		
+		this.eye += direction;
 	}
 	
 	public float[] getPos(){
@@ -73,6 +86,10 @@ public class Avatar {
 	public float[] getSide(){
 		float _pos[] = new float[]{(float) side[0],(float) side[1],(float) side[2]};	
 		return _pos;
+	}
+	
+	public double getEye(){
+		return eye;
 	}
 	
 	public void setUpMaterial(GL2 gl) {
