@@ -45,7 +45,7 @@ public class Terrain {
 	float Z_OFFSET;
 	MyTexture myTexture;
 	
-	final static int FloatBYTE = 8;
+	final static int FloatBYTE = 4;
 
 	/**
 	 * Create a new terrain

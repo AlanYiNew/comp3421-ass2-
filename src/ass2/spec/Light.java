@@ -15,34 +15,43 @@ public class Light {
 	private float lightDiff[] = { 1.0f, 0.85f, 0.7f, 1 };
 	private float lightSpec[] = { 1.0f, 0.85f, 0.7f, 1 };
 	private float gloAmb[] = { 0.0f, 0.0f, 0.0f, 1.0f };	
+	
+	public static enum lightMode{SUN,TORCH};
+	lightMode mode;
+	
 	public Light(){
 		initialTime = System.currentTimeMillis();
 		current = day;
 	}
+	
+	public Light(Light.lightMode m){
+		mode = m;
+	}
+	
+	public void setMode(Light.lightMode m){
+		mode = m;
+	}
+	
 	public void setUpLight(GL2 gl) {
-		double currTime = System.currentTimeMillis();
-		double difference = (currTime - initialTime)/6000;
-		/*if (lightPos[1] <= -radius * 0.9 && radius*Math.sin(difference) > -radius * 0.9){
-			setDayStartTime();
-			current = day;
-		}	else if (lightPos[1] > -radius * 0.9 && radius*Math.sin(difference) <= -radius * 0.9){
-			setDayEndTime();
-			current = night;
-		}*/
-		lightPos[0] = (float) (-radius*Math.cos(difference));
-		lightPos[1] = (float) (radius*Math.sin(difference));		
-		//if (current == day){
-			if	((float)Math.abs( Math.sin(difference)) >= 0.7){
-				lightDiff[2] = (float)Math.abs( Math.sin(difference));
-				lightSpec[2] = (float)Math.abs( Math.sin(difference));
-			}
-			
-			if	((float)Math.abs( Math.sin(difference)) >= 0.85){
-				lightDiff[1] = (float)Math.abs( Math.sin(difference));
-				lightSpec[1] = (float)Math.abs( Math.sin(difference));
-			}
-		//}
 		
+		if(mode == lightMode.SUN){
+			double currTime = System.currentTimeMillis();
+			double difference = (currTime - initialTime)/6000;
+			lightPos[0] = (float) (-radius*Math.cos(difference));
+			lightPos[1] = (float) (radius*Math.sin(difference));
+				if	((float)Math.abs( Math.sin(difference)) >= 0.7){
+					lightDiff[2] = (float)Math.abs( Math.sin(difference));
+					lightSpec[2] = (float)Math.abs( Math.sin(difference));
+				}
+				
+				if	((float)Math.abs( Math.sin(difference)) >= 0.85){
+					lightDiff[1] = (float)Math.abs( Math.sin(difference));
+					lightSpec[1] = (float)Math.abs( Math.sin(difference));
+				}
+		}else if(mode == lightMode.TORCH){
+			
+		}
+				
 		gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, lightPos, 0);
 		gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, lightDiff, 0);
 		gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_SPECULAR, lightSpec, 0);
