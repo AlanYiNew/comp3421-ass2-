@@ -145,13 +145,13 @@ public class Game extends JFrame implements GLEventListener, KeyListener {
 			if (camera.getMode() == Camera.cameraMode.firstPerson)
 				teapot.vmove(0.1);
 			else
-				teapot.zmove(0.1);
+				teapot.zmove(-0.1);
 			break;
 		case KeyEvent.VK_DOWN:
-			teapot.vmove(-0.1);if (camera.getMode() == Camera.cameraMode.firstPerson)
+			if (camera.getMode() == Camera.cameraMode.firstPerson)
 				teapot.vmove(-0.1);
 			else
-				teapot.zmove(-0.1);
+				teapot.zmove(0.1);
 			break;
 		case KeyEvent.VK_LEFT:
 			if (camera.getMode() == Camera.cameraMode.firstPerson)

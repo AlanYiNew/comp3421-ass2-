@@ -96,7 +96,7 @@ public class Avatar {
 				|| Math.abs(pos[2] + side[2] * direction) >= terrain
 						.getOffset()[1])
 			return;
-		pos[0] += side[0] * direction;
+		pos[0] += direction;
 		pos[1] = terrain.altitude(pos[0] + terrain.getOffset()[0], pos[2]
 				+ terrain.getOffset()[1]);
 	}
@@ -106,7 +106,7 @@ public class Avatar {
 				|| Math.abs(pos[2] + side[2] * direction) >= terrain
 						.getOffset()[1])
 			return;
-		pos[2] += side[2] * direction;
+		pos[2] += direction;
 		pos[1] = terrain.altitude(pos[0] + terrain.getOffset()[0], pos[2]
 				+ terrain.getOffset()[1]);
 	}

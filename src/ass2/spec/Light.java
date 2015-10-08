@@ -36,7 +36,7 @@ public class Light {
 		
 		if(mode == lightMode.SUN){
 			double currTime = System.currentTimeMillis();
-			double difference = (currTime - initialTime)/6000;
+			double difference = (currTime - initialTime)/8000;
 			lightPos[0] = (float) (-radius*Math.cos(difference));
 			lightPos[1] = (float) (radius*Math.sin(difference));
 				if	((float)Math.abs( Math.sin(difference)) >= 0.7){
