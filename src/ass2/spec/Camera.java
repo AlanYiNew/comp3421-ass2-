@@ -11,7 +11,7 @@ public class Camera {
 	private final float NEAR = 0.1f;
 	private final float FAR = 10f;
 	private final float fovy = 90;
-	public static enum cameraMode{firstPerson,thirdPerson};
+	public static enum cameraMode{firstPerson,thirdPerson,fixedView};
 	private cameraMode mode;
 	
 	public Avatar avatar;
@@ -20,7 +20,7 @@ public class Camera {
 	public Camera(Avatar ava, Terrain ter){
 		avatar = ava;
 		terrain = ter;
-		mode = cameraMode.firstPerson;
+		mode = cameraMode.thirdPerson;
 	}
 	
 	public float[] getPos() {
@@ -35,7 +35,7 @@ public class Camera {
 	}
 	
 	public void setCamera(GL2 gl){
-		if (mode == cameraMode.firstPerson){
+		if (mode == cameraMode.thirdPerson || mode == cameraMode.firstPerson){
 			pos = avatar.getPos();
 			float[] target = avatar.getFront();
 			
@@ -59,6 +59,7 @@ public class Camera {
 			float[] target = avatar.getPos();
 			float eyeX = target[0];
 			float eyeZ = target[2] + terrain.Z_OFFSET/2;
+			System.out.println(pos[1]);
 			float eyeY = pos[1] + 3;
 			GLU glu = new GLU();
 			gl.glMatrixMode(GL2.GL_MODELVIEW);
@@ -74,9 +75,11 @@ public class Camera {
 
 	public void changeMode() {
 		if (mode == cameraMode.firstPerson){
-			mode = cameraMode.thirdPerson;
-		}	else{
+			mode = cameraMode.fixedView;
+		}	else if (mode == cameraMode.thirdPerson){
 			mode = cameraMode.firstPerson;
+		}	else{
+			mode = cameraMode.thirdPerson;
 		}
 		
 	}
