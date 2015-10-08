@@ -44,6 +44,8 @@ public class Terrain {
 	float X_OFFSET;
 	float Z_OFFSET;
 	MyTexture myTexture;
+	
+	final static int FloatBYTE = 8;
 
 	/**
 	 * Create a new terrain
@@ -214,11 +216,11 @@ public class Terrain {
 		
 		//specify the pointer to refer to the normal data in GL_ARRAY_BUFFER
 		gl.glNormalPointer(GL2.GL_FLOAT, 0, terrainPositions.length
-				* Float.BYTES); // colors are found after the position
+				* FloatBYTE); // colors are found after the position
 		
 		//specify the pointer to refer to the texture data in GL_ARRAY_BUFFER
 		gl.glTexCoordPointer(2, GL2.GL_FLOAT, 0,
-				(terrainPositions.length + terrainNormals.length) * Float.BYTES);
+				(terrainPositions.length + terrainNormals.length) * FloatBYTE);
 
 		// Draw triangles with each Mesh having 3 vertices
 		gl.glDrawArrays(GL2.GL_TRIANGLES, 0, numOfMesh * 3);
@@ -343,20 +345,20 @@ public class Terrain {
 		// Seperate enough space in the Buffer to put in data later
 		gl.glBufferData(GL2.GL_ARRAY_BUFFER, (terrainPositions.length
 				+ terrainNormals.length + textureCoordinates.length)
-				* Float.BYTES, null, GL2.GL_STATIC_DRAW);
+				* FloatBYTE, null, GL2.GL_STATIC_DRAW);
 		
 		//put in data in the order posData, normalData and textureData;
 		//second argument is the offset from which the data begins
 		//Third argument is the number of bytes of the data
 		//Last argument is the Buffer object we refer to
 		gl.glBufferSubData(GL2.GL_ARRAY_BUFFER, 0, terrainPositions.length
-				* Float.BYTES, posData);
+				* FloatBYTE, posData);
 		gl.glBufferSubData(GL2.GL_ARRAY_BUFFER, terrainPositions.length
-				* Float.BYTES, terrainNormals.length * Float.BYTES, normalData);
+				* FloatBYTE, terrainNormals.length * FloatBYTE, normalData);
 		gl.glBufferSubData(
 				GL2.GL_ARRAY_BUFFER,
-				(terrainPositions.length + terrainNormals.length) * Float.BYTES,
-				textureCoordinates.length * Float.BYTES, textureData);
+				(terrainPositions.length + terrainNormals.length) * FloatBYTE,
+				textureCoordinates.length * FloatBYTE, textureData);
 	}
 
 	public int[] getBufferIds() {
