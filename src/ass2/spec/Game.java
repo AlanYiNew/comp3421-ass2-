@@ -93,6 +93,7 @@ public class Game extends JFrame implements GLEventListener, KeyListener {
 	@Override
 	public void display(GLAutoDrawable drawable) {
 		GL2 gl = drawable.getGL().getGL2();
+		gl.glClearColor(1,1,1,1);
 		gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
 
 		// gluLookAt must be called under modelview matrix
@@ -104,6 +105,7 @@ public class Game extends JFrame implements GLEventListener, KeyListener {
 		if (camera.getMode() != Camera.cameraMode.firstPerson)
 			teapot.draw(gl);
 		myTerrain.draw(gl, data);
+
 
 	}
 

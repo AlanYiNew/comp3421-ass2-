@@ -196,11 +196,15 @@ public class Terrain {
 	 */
 	public void addRoad(double width, double[] spine) {
 		Road road = new Road(width, spine);
+		road.setTerrain(this);
+		road.initExtrusion();
 		myRoads.add(road);
 	}
 
 	public void draw(GL2 gl, TextureData data) {
 		gl.glEnable(GL2.GL_TEXTURE_2D);
+		
+		
 		// Bind the buffer we want to use
 		gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, bufferIds[0]);
 
@@ -234,10 +238,15 @@ public class Terrain {
 
 		// Unbind the buffer.
 		gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);
+
 		gl.glDisable(GL2.GL_TEXTURE_2D);
 		
 		for (Tree i:myTrees){
 			i.draw(gl, 4);
+		}
+		
+		for (Road r:myRoads){
+			r.draw(gl);
 		}
 	}
 
