@@ -183,6 +183,8 @@ public class Terrain {
 	public void addTree(double x, double z) {
 		double y = altitude(x, z);
 		Tree tree = new Tree(x, y, z);
+		tree.setPattern("[la][ba][ra][fa]");
+		tree.addTerrain(this);
 		myTrees.add(tree);
 	}
 
@@ -233,6 +235,10 @@ public class Terrain {
 		// Unbind the buffer.
 		gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);
 		gl.glDisable(GL2.GL_TEXTURE_2D);
+		
+		for (Tree i:myTrees){
+			i.draw(gl, 4);
+		}
 	}
 
 	// Must be called in the init state
