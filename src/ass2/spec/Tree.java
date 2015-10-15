@@ -13,7 +13,7 @@ public class Tree {
 
 	private double[] myPos;
 	private double[] initialDirection;
-	private double factor = 0.5;
+	private double factor = 0.3;
 	private String pattern;
 	private String[] generatedPattern;
 	private double treeHeight = 1;
@@ -56,7 +56,6 @@ public class Tree {
 		
 		gl.glTranslated(0,treeHeight*0.8,0);
 		gl.glEnable(GL2.GL_TEXTURE_2D);
-		gl.glTranslated(myPos[0],myPos[1]+1,myPos[2]);
 		
 		for (int i = 0; i < extendedPattern.length(); i++) {
 			switch (extendedPattern.charAt(i)) {
@@ -67,24 +66,20 @@ public class Tree {
 				gl.glPopMatrix();
 				break;
 			case 'a':
-				gl.glTranslated(0, 1, 0);
+				gl.glTranslated(0, factor, 0);
 				drawBallAt(gl, new double[] { 0, 0, 0 });
 				break;
 			case 'l':
 				gl.glRotated(30, 0, 0, 1);
-				drawBallAt(gl, new double[] { 0, 0, 0 });
 				break;
 			case 'r':
 				gl.glRotated(-30, 0, 0, 1);
-				drawBallAt(gl, new double[] { 0, 0, 0 });
 				break;
 			case 'f':
 				gl.glRotated(30, 1, 0, 0);
-				drawBallAt(gl, new double[] { 0, 0, 0 });
 				break;
 			case 'b':
 				gl.glRotated(-30, 1, 0, 0);
-				drawBallAt(gl, new double[] { 0, 0, 0 });
 				break;
 			}
 		}
@@ -129,7 +124,7 @@ public class Tree {
 
 	private void drawBallAt(GL2 gl, double[] pos) {
 		gl.glPushMatrix();
-		gl.glTranslated(pos[0]-terrain.X_OFFSET, pos[1], pos[2]-terrain.Z_OFFSET);
+		gl.glTranslated(pos[0], pos[1], pos[2]);
 		GLUT glut = new GLUT();
 		gl.glFrontFace(GL2.GL_CW);
 		glut.glutSolidSphere(0.1, 5, 5);
