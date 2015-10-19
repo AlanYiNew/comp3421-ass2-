@@ -31,7 +31,8 @@ public class Game extends JFrame implements GLEventListener, KeyListener {
 	private Camera camera;
 	private Avatar teapot;
 	private Light light;
-
+	private Rain rain;
+	
 	public Game(Terrain terrain) {
 		super("Assignment 2");
 		myTerrain = terrain;
@@ -46,6 +47,7 @@ public class Game extends JFrame implements GLEventListener, KeyListener {
 		camera = new Camera(teapot, myTerrain);
 		light = new Light();
 		light.setMode(Light.lightMode.SUN);
+		rain = new Rain(camera);
 	}
 
 	/**
@@ -105,8 +107,7 @@ public class Game extends JFrame implements GLEventListener, KeyListener {
 		if (camera.getMode() != Camera.cameraMode.firstPerson)
 			teapot.draw(gl);
 		myTerrain.draw(gl, data);
-
-
+		rain.display(gl);
 	}
 
 	@Override

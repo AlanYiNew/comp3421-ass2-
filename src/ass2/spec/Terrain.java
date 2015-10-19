@@ -44,7 +44,6 @@ public class Terrain {
 	float X_OFFSET;
 	float Z_OFFSET;
 	MyTexture myTexture;
-	
 	final static int FloatBYTE = 4;
 
 	/**
@@ -256,7 +255,8 @@ public class Terrain {
 
 		// Texture setting
 		myTexture = new MyTexture(gl, "grass.jpg", "jpg", true);
-		
+		gl.glActiveTexture(gl.GL_TEXTURE0);
+		gl.glBindTexture(GL2.GL_TEXTURE_2D, myTexture.getTextureId()); 
 		//The third argument should be GL_MODULATE if light is needed in the scene
 		gl.glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE,
 				GL2.GL_MODULATE);
