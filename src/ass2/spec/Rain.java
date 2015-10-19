@@ -6,17 +6,18 @@ import javax.media.opengl.GL2;
 import static javax.media.opengl.GL.*;  // GL constants
 
 public class Rain{
-	private static final int MAX_PARTICLES = 1000; // max number of particles
+	private static final int MAX_PARTICLES = 50000; // max number of particles
 	private Particle[] particles = new Particle[MAX_PARTICLES];
 	// Global speed for all the particles
 	private static float z = -40.0f; //zOffset
 	private static float y = 5.0f;   //yOffset
 	MyTexture myTexture;
 	private Camera camera;
-
-	Rain(Camera camera){
+	private Terrain terrain;
+	Rain(Camera camera,Terrain terrain){
 		// Initialize the particles
 		this.camera = camera;
+		this.terrain = terrain;
 		for (int i = 0; i < MAX_PARTICLES; i++) {
 			particles[i] = new Particle();
 		}
@@ -35,8 +36,8 @@ public class Rain{
 		
 
 		// Render the particles
-		for (int i = 0; i < 100; i++) {
-			if (particles[i].active) {
+		for (int i = 0; i < MAX_PARTICLES; i++) {
+			
 				// Draw the particle using our RGB values, fade the particle based on it's life
 
 				gl.glColor4f(0.5f,0.75f, 0.75f, 0.3f);
@@ -57,10 +58,10 @@ public class Rain{
 				float[] dc = MathUtil.sub(rainPos,camera.getEye());
 				float[] ca = MathUtil.normalise( MathUtil.crossProduct(dc, camera.getCameraUp()));
 				float[] cb = MathUtil.normalise(MathUtil.crossProduct(dc, ca));
-				float[] p1 = MathUtil.add(MathUtil.add(rainPos,ca),cb);
-				float[] p2 = MathUtil.add(MathUtil.sub(rainPos,ca),cb);
-				float[] p3 = MathUtil.sub(MathUtil.add(rainPos,ca),cb);
-				float[] p4 = MathUtil.sub(MathUtil.sub(rainPos,ca),cb);
+				float[] p1 = MathUtil.sub(rainPos, MathUtil.scale(MathUtil.add(ca,cb),0.01f));
+				float[] p2 = MathUtil.add(rainPos, MathUtil.scale(MathUtil.sub(ca,cb),0.01f));
+				float[] p3 = MathUtil.add(rainPos, MathUtil.scale(MathUtil.add(ca,cb),0.01f));
+				float[] p4 = MathUtil.sub(rainPos, MathUtil.scale(MathUtil.sub(ca,cb),0.01f));
 				gl.glMultiTexCoord2d(GL_TEXTURE1,1, 1);
 	            //gl.glVertex3f(px + 0.0125f, py + 0.0125f, pz); // Top Right
 	            gl.glVertex3f(p1[0],p1[1],p1[2]);
@@ -69,13 +70,13 @@ public class Rain{
 	            gl.glVertex3f(p2[0],p2[1],p2[2]);
 	            gl.glMultiTexCoord2d(GL_TEXTURE1,1, 0);
 	            //gl.glVertex3f(px + 0.0125f, py - 0.0125f, pz); // Bottom Right
-	            gl.glVertex3f(p3[0],p3[1],p3[2]);
+	            gl.glVertex3f(p4[0],p4[1],p4[2]);
 	            gl.glMultiTexCoord2d(GL_TEXTURE1,0, 0);
 	            //gl.glVertex3f(px - 0.0125f, py - 0.0125f, pz); // Bottom Left
-	            gl.glVertex3f(p4[0],p4[1],p4[2]);
+	            gl.glVertex3f(p3[0],p3[1],p3[2]);
 	            gl.glEnd();
-	            y -=0.01f;
-			}
+	            particles[i].update();
+			
 		}
 		gl.glDisable(GL_TEXTURE_2D);
 		gl.glPopMatrix();
@@ -86,27 +87,28 @@ public class Rain{
 
 	// Particle (inner class)
 	class Particle {
-		boolean active; // always active in this program
-		float life;     // life time
-		float fade;     // fading speed, which reduces the life time
-		float x, y, z;  // position
+		float x, y, z,drop;  // position
 		private Random rand = new Random();
 
 		// Constructor
 		public Particle() {
-			active = true;
 			burst();
 		}
 
-		public void burst() {
-			life = 1.0f;
-
-			// Set a random fade speed value between 0.003 and 0.103
-			fade = rand.nextInt(100) / 1000.0f + 0.003f;
+		public void update() {
+			if (y <= 0){
+				burst();
+			}else{
+				y -= drop;
+			}
 			
-			x = rand.nextFloat();
-			y = rand.nextFloat()+5;
-			z = rand.nextFloat();
+		}
+
+		public void burst() {
+			x = ((float)(rand.nextInt(terrain.size().width*100)))/100-terrain.X_OFFSET;
+			y = rand.nextFloat()+4;
+			z = ((float)(rand.nextInt(terrain.size().height*100)))/100-terrain.Z_OFFSET;
+			drop = rand.nextFloat();
 		}
 	}
 

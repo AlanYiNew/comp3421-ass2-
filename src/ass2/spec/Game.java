@@ -47,7 +47,7 @@ public class Game extends JFrame implements GLEventListener, KeyListener {
 		camera = new Camera(teapot, myTerrain);
 		light = new Light();
 		light.setMode(Light.lightMode.SUN);
-		rain = new Rain(camera);
+		rain = new Rain(camera,myTerrain);
 	}
 
 	/**

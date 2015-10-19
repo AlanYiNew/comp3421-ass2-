@@ -30,4 +30,12 @@ public class MathUtil {
 		val[2] = v1[2] - v2[2];
 		return val;	
 	}
+	
+	public static float[] scale(float[]v1, float scale){
+		float[] val = new float[3];
+		val[0] = v1[0] * scale;
+		val[1] = v1[1] * scale;
+		val[2] = v1[2] * scale;
+		return val;	
+	}
 }
