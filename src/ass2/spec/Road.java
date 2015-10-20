@@ -174,23 +174,23 @@ public class Road {
     	m[2][2] /= n;
     	
     	// get perpendicular
-    	m[0][1] = -m[1][2];
-    	m[1][1] = m[0][2];
-    	m[2][1] = 0;
-    	m[3][1] = 0;
+    	m[0][0] = -m[2][2];
+    	m[1][0] = 0;
+    	m[2][0] = m[0][2];
+    	m[3][0] = 0;
     	
     	// i 
-    	m[0][0] = m[1][2] * m[2][1] - m[1][1] * m[2][2];
-    	m[1][0] = m[2][2] * m[0][1] - m[2][1] * m[0][2];
-    	m[2][0] = m[0][2] * m[1][1] - m[0][1] * m[1][2];
-    	m[3][0] = 0;
+    	m[0][1] = m[1][2] * m[2][0] - m[1][0] * m[2][2];
+    	m[1][1] = m[2][2] * m[0][0] - m[2][0] * m[0][2];
+    	m[2][1] = m[0][2] * m[1][0] - m[0][0] * m[1][2];
+    	m[3][1] = 0;
     	
     	CrossSection cs = new CrossSection();
     	
     	
     	for(int i = 0; i < crossSec.length; i++){
     		double[] p = multiply(m,crossSec[i]);
-    		System.out.println(p[0] + " " + p[1] + " " + p[2]);
+ //   		System.out.println(p[0] + " " + p[1] + " " + p[2]);
     		cs.add(p);
     	}
     	
@@ -301,7 +301,8 @@ public class Road {
     	
     	gl.glPushMatrix();
  //   		gl.glPolygonOffset(-1,-1);
-    		gl.glPolygonMode(GL2.GL_FRONT_AND_BACK, GL2.GL_LINE);
+    		gl.glPolygonMode(GL2.GL_FRONT, GL2.GL_LINE);
+ //   		gl.glPolygonMode(GL2.GL_BACK, GL2.GL_POINT);
     		for(int i = 0; i < crossSecVertices.size()-1; i++){
     			CrossSection ms0 = crossSecVertices.get(i);
     			CrossSection ms1 = crossSecVertices.get(i+1);
