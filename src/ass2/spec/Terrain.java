@@ -46,6 +46,7 @@ public class Terrain {
 	float Z_OFFSET;
 	MyTexture myTexture_grass;
 	MyTexture myTexture_branch;
+	Creature creature = new Creature();
 	
 	final static int FloatBYTE = 4;
 
@@ -250,6 +251,13 @@ public class Terrain {
 		for (Road r:myRoads){
 			r.draw(gl);
 		}
+		
+		gl.glPushMatrix();
+		gl.glLoadIdentity();
+		gl.glTranslated(0,6,0);
+		creature.init(gl);
+		creature.draw(gl);
+		gl.glPopMatrix();
 	}
 
 	// Must be called in the init state
