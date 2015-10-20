@@ -35,7 +35,7 @@ public class Tree {
 		this.pattern = pattern;
 	}
 
-	public void draw(GL2 gl, int iteration) {
+	public void draw(GL2 gl, int iteration,int[] textureArray) {
 		generatePattern(iteration);
 		//setUpMaterial(gl);
 		String extendedPattern = generatedPattern[iteration - 1];
@@ -45,17 +45,19 @@ public class Tree {
 		gl.glMaterialf(GL2.GL_FRONT, GL2.GL_AMBIENT, 1);
 		gl.glMaterialf(GL2.GL_FRONT, GL2.GL_DIFFUSE, 1);
 		gl.glMaterialf(GL2.GL_FRONT, GL2.GL_SPECULAR, 1);
-		gl.glPushMatrix();
 		
+		gl.glPushMatrix();
 		GLUT glut = new GLUT();
 		gl.glRotated(-90,1,0,0);
 		gl.glFrontFace(GL2.GL_CW);
+		gl.glBindTexture(GL2.GL_TEXTURE_2D, textureArray[1]);
+		//System.out.println(textureArray[0]+","+textureArray[1]);
 		glut.glutSolidCylinder(0.1, treeHeight, 16, 16);
+		gl.glBindTexture(GL2.GL_TEXTURE_2D, textureArray[0]);
 		gl.glFrontFace(GL2.GL_CCW);
 		gl.glPopMatrix();
 		
 		gl.glTranslated(0,treeHeight*0.8,0);
-		gl.glEnable(GL2.GL_TEXTURE_2D);
 		
 		for (int i = 0; i < extendedPattern.length(); i++) {
 			switch (extendedPattern.charAt(i)) {
@@ -83,7 +85,6 @@ public class Tree {
 				break;
 			}
 		}
-		gl.glDisable(GL2.GL_TEXTURE_2D);
 		gl.glPopMatrix();
 	}
 

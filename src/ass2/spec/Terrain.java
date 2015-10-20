@@ -38,12 +38,14 @@ public class Terrain {
 	FloatBuffer posData;
 	FloatBuffer normalData;
 	FloatBuffer textureData;
+	FloatBuffer branchtextureData;
 	float terrainPositions[];
 	float terrainNormals[];
 	float textureCoordinates[];
 	float X_OFFSET;
 	float Z_OFFSET;
-	MyTexture myTexture;
+	MyTexture myTexture_grass;
+	MyTexture myTexture_branch;
 	
 	final static int FloatBYTE = 4;
 
@@ -240,15 +242,14 @@ public class Terrain {
 		gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);
 
 		
-		
+		int[] textureArray = {myTexture_grass.getTextureId(),myTexture_branch.getTextureId()};
 		for (Tree i:myTrees){
-			i.draw(gl, 4);
+			i.draw(gl, 4, textureArray);
 		}
 		gl.glDisable(GL2.GL_TEXTURE_2D);
 		for (Road r:myRoads){
 			r.draw(gl);
 		}
-		
 	}
 
 	// Must be called in the init state
@@ -256,7 +257,8 @@ public class Terrain {
 
 
 		// Texture setting
-		myTexture = new MyTexture(gl, "grass.jpg", "jpg", true);
+		myTexture_branch = new MyTexture(gl, "branch.jpg", "jpg",true);
+		myTexture_grass = new MyTexture(gl, "grass.jpg", "jpg", true);
 		
 		//The third argument should be GL_MODULATE if light is needed in the scene
 		gl.glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE,
