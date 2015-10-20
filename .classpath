@@ -2,7 +2,15 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="/import/adams/1/cs3421/jogamp/jar/gluegen-rt.jar"/>
-	<classpathentry kind="lib" path="/tmp_amd/adams/export/adams/1/cs3421/jogamp/jar/jogl-all.jar"/>
+	<classpathentry kind="lib" path="D:/jogamp-all-platforms/jar/gluegen-rt.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/Users/sange/Downloads/jogl/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="D:/jogamp-all-platforms/jar/jogl-all.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/Users/sange/Downloads/jogl/javadoc/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

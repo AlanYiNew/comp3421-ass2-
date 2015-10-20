@@ -11,6 +11,13 @@ public class Camera {
 	private final float NEAR = 0.1f;
 	private final float FAR = 10f;
 	private final float fovy = 90;
+	private float[] eye = new float[3];
+	private float[] center = new float[3];
+	private	float[] cameraUp = {0,1,0};
+	public float[] getCameraUp() {
+		return cameraUp;
+	}
+
 	public static enum cameraMode{firstPerson,thirdPerson,fixedView};
 	private cameraMode mode;
 	
@@ -39,38 +46,49 @@ public class Camera {
 			pos = avatar.getPos();
 			float[] target = avatar.getFront();
 			
-			float eyeX = (float) (pos[0] - target[0]);
-			float eyeY = (float) (pos[1] + 0.5 + avatar.getEye());
-			float eyeZ = (float) (pos[2] - target[2]);
+			eye[0] = (float) (pos[0] - target[0]);
+			eye[1] = (float) (pos[1] + 0.5 + avatar.getEye());
+			eye[2] = (float) (pos[2] - target[2]);
 			
-			float centerX = (float)(pos[0] + target[0]);
-			float centerZ = (float)(pos[2] + target[2]);
-			float centerY = (float)(pos[1] + 0.5 - avatar.getEye());
+			center[0] = (float)(pos[0] + target[0]);
+			center[2] = (float)(pos[2] + target[2]);
+			center[1] = (float)(pos[1] + 0.5 - avatar.getEye());
 			
 			GLU glu = new GLU();
 			gl.glMatrixMode(GL2.GL_MODELVIEW);
 			gl.glLoadIdentity();	
-			glu.gluLookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, 0, 1, 0);
+			
+			glu.gluLookAt(eye[0], eye[1], eye[2], center[0], center[1], center[2], 0, 1, 0);
 			gl.glMatrixMode(GL2.GL_PROJECTION);
 			gl.glLoadIdentity();
 			glu.gluPerspective(fovy, aspectRatio, NEAR, FAR);
 			gl.glMatrixMode(GL2.GL_MODELVIEW);
-		} 	else{
+		} else{
 			float[] target = avatar.getPos();
-			float eyeX = target[0];
-			float eyeZ = target[2] + terrain.Z_OFFSET/2;
+			eye[0] = target[0];
+			eye[2]= target[2] + terrain.Z_OFFSET/2;
 			System.out.println(pos[1]);
-			float eyeY = pos[1] + 3;
+			eye[1] = pos[1] + 3;
+			center = target;
+
 			GLU glu = new GLU();
 			gl.glMatrixMode(GL2.GL_MODELVIEW);
 			gl.glLoadIdentity();	
-			glu.gluLookAt(eyeX, eyeY, eyeZ, target[0], target[1], target[2], 0, 1, 0);
+			glu.gluLookAt(eye[0], eye[1], eye[2], center[0], center[1], center[2], 0, 1, 0);
 			gl.glMatrixMode(GL2.GL_PROJECTION);
 			gl.glLoadIdentity();
 			glu.gluPerspective(fovy, aspectRatio, NEAR, FAR);
 			gl.glMatrixMode(GL2.GL_MODELVIEW);
 			
 		}
+	}
+
+	public float[] getEye() {
+		return eye;
+	}
+
+	public float[] getCenter() {
+		return center;
 	}
 
 	public void changeMode() {
