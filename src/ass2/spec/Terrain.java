@@ -46,6 +46,7 @@ public class Terrain {
 	float Z_OFFSET;
 	MyTexture myTexture_grass;
 	MyTexture myTexture_branch;
+	Creature creature = new Creature();
 	
 	final static int FloatBYTE = 4;
 
@@ -241,16 +242,23 @@ public class Terrain {
 		// Unbind the buffer.
 		gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);
 
-		gl.glDisable(GL2.GL_TEXTURE_2D);
+		
 		
 		int[] textureArray = {myTexture_grass.getTextureId(),myTexture_branch.getTextureId()};
 		for (Tree i:myTrees){
 			i.draw(gl, 4, textureArray);
 		}
-
+		gl.glDisable(GL2.GL_TEXTURE_2D);
 		for (Road r:myRoads){
 			r.draw(gl);
 		}
+		
+		gl.glPushMatrix();
+		//gl.glLoadIdentity();
+		gl.glTranslated(1,4,1);
+		creature.init(gl);
+		creature.draw(gl);
+		gl.glPopMatrix();
 	}
 
 	// Must be called in the init state
