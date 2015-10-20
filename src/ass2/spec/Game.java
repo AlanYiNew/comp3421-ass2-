@@ -44,8 +44,11 @@ public class Game extends JFrame implements GLEventListener, KeyListener {
 		teapot = new Avatar(0, myTerrain.altitude(offSet[1], offSet[0]), 0,
 				myTerrain);
 		camera = new Camera(teapot, myTerrain);
+		float _sunpos[] = myTerrain.getSunlight();
+		float sunpos[] = new float[]{_sunpos[0],_sunpos[1],_sunpos[2],0};
 		light = new Light();
 		light.setMode(Light.lightMode.SUN);
+		light.setLightPos(sunpos);
 	}
 
 	/**
@@ -98,7 +101,6 @@ public class Game extends JFrame implements GLEventListener, KeyListener {
 
 		// gluLookAt must be called under modelview matrix
 
-		// myTerrain.init(gl);
 		camera.setCamera(gl);
 		light.setUpLight(gl);
 		light.draw(gl);
@@ -179,6 +181,9 @@ public class Game extends JFrame implements GLEventListener, KeyListener {
 			break;
 		case KeyEvent.VK_V:
 			camera.changeMode();
+			break;
+		case KeyEvent.VK_M:
+			light.toggleSun();
 			break;
 		}
 	}

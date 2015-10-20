@@ -336,7 +336,7 @@ public class Road {
     		gl.glBegin(GL2.GL_LINE_STRIP);
     		{
     			for(double[] p : spine){
-    				gl.glVertex3d(p[0],terrain.altitude(p[0]+terrain.X_OFFSET, p[1]+terrain.Z_OFFSET)+0.5,p[1]);
+    				gl.glVertex3d(p[0],terrain.altitude(p[0]+terrain.X_OFFSET, p[1]+terrain.Z_OFFSET),p[1]);
     			}
     		}
     		gl.glEnd();
