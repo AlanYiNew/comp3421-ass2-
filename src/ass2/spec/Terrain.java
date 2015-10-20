@@ -239,7 +239,7 @@ public class Terrain {
 		// Unbind the buffer.
 		gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);
 
-		gl.glDisable(GL2.GL_TEXTURE_2D);
+		
 		
 		for (Tree i:myTrees){
 			i.draw(gl, 4);
@@ -248,6 +248,7 @@ public class Terrain {
 		for (Road r:myRoads){
 			r.draw(gl);
 		}
+		gl.glDisable(GL2.GL_TEXTURE_2D);
 	}
 
 	// Must be called in the init state

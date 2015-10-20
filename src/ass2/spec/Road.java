@@ -76,9 +76,8 @@ public class Road {
         crossSecVertices = new ArrayList<CrossSection>();
         spine = new ArrayList<double[]>();        
         crossSec = new double[][]{
-        	{0,0,0,1},
-        	{1,0,0,1},
-        	{0,0,0,1}
+        	{-myWidth/2,0,0,1},
+        	{myWidth/2,0,0,1}
         };
         this.createSpine();
         this.createCrossSectionOnSpine();
@@ -117,13 +116,13 @@ public class Road {
     }
     
     public void createCrossSectionOnSpine(){
-    	double pCurr[] = new double[]{spine.get(0)[0],
-    			terrain.altitude(spine.get(0)[0]+terrain.X_OFFSET,spine.get(0)[1]+terrain.Z_OFFSET) + 0.2,
-    			spine.get(0)[1]};
+    	double pCurr[] = new double[]{spine.get(0)[0]-terrain.X_OFFSET,
+    			terrain.altitude(spine.get(0)[0],spine.get(0)[1])+0.2,
+    			spine.get(0)[1]-terrain.Z_OFFSET};
     	
-    	double pNext[] = new double[]{spine.get(1)[0],
-    			terrain.altitude(spine.get(1)[0]+terrain.X_OFFSET,spine.get(1)[1]+terrain.Z_OFFSET) + 0.2,
-    			spine.get(1)[1]};
+    	double pNext[] = new double[]{spine.get(1)[0] - terrain.X_OFFSET,
+    			terrain.altitude(spine.get(1)[0], spine.get(1)[1])+0.2,
+    			spine.get(1)[1] - terrain.Z_OFFSET};
     	
     	double pPrev[] = pCurr;
     	
@@ -132,9 +131,9 @@ public class Road {
     	for(int i = 1; i < spine.size()-1; i++){
     		pPrev = pCurr;
     		pCurr = pNext;
-    		pNext = new double[]{spine.get(i+1)[0],
-    				terrain.altitude(spine.get(i+1)[0]+terrain.X_OFFSET,spine.get(i+1)[1]+terrain.Z_OFFSET) + 0.2,
-    				spine.get(i+1)[1]};
+    		pNext = new double[]{spine.get(i+1)[0]-terrain.X_OFFSET,
+    				terrain.altitude(spine.get(i+1)[0],spine.get(i+1)[1])+0.2,
+    				spine.get(i+1)[1]-terrain.Z_OFFSET};
     		crossSecVertices.add(getTransPoint(pCurr,pNext,pPrev));	
     	}
     	
@@ -144,16 +143,6 @@ public class Road {
     }
     
     public void createSpine(){
-    	
-    	
-    	/*double inc = (double)1/SLICES;
-    	for ( int j = 0; j < size() -1; j++){
-	    	for(int i = 0; i <= SLICES; i++){
-	    		double[] p = point(j+ i* inc);
-	    		spine.add(p);
-	    	}		
-    	} // SEGFAULT
-    	*/
     	double inc = (double)(size())/SLICES;
 
     	for(int i = 0; i < SLICES; i++){
@@ -201,7 +190,7 @@ public class Road {
     	
     	for(int i = 0; i < crossSec.length; i++){
     		double[] p = multiply(m,crossSec[i]);
-  //  		System.out.println(p[0] + " " + p[1] + " " + p[2]);
+    		System.out.println(p[0] + " " + p[1] + " " + p[2]);
     		cs.add(p);
     	}
     	
@@ -309,9 +298,10 @@ public class Road {
     }
 
     public void draw(GL2 gl){
-
+    	
     	gl.glPushMatrix();
-    		
+ //   		gl.glPolygonOffset(-1,-1);
+    		gl.glPolygonMode(GL2.GL_FRONT_AND_BACK, GL2.GL_LINE);
     		for(int i = 0; i < crossSecVertices.size()-1; i++){
     			CrossSection ms0 = crossSecVertices.get(i);
     			CrossSection ms1 = crossSecVertices.get(i+1);
@@ -331,15 +321,25 @@ public class Road {
     				gl.glVertex3d(ms1.get(0)[0], ms1.get(0)[1], ms1.get(0)[2]);
     			}
     			gl.glEnd();
-    		} 
+    		}
+    	
+    		/*gl.glBegin(GL2.GL_QUAD_STRIP);
+    		{
+    			for(CrossSection ms : crossSecVertices){
+    				gl.glVertex3d(ms.get(0)[0], ms.get(0)[1], ms.get(0)[2]);
+    				gl.glVertex3d(ms.get(1)[0], ms.get(1)[1], ms.get(1)[2]);
+    		}
+    		*/
     		
+    		gl.glPolygonMode(GL2.GL_FRONT_AND_BACK, GL2.GL_FILL);
     		gl.glBegin(GL2.GL_LINE_STRIP);
     		{
     			for(double[] p : spine){
-    				gl.glVertex3d(p[0],terrain.altitude(p[0]+terrain.X_OFFSET, p[1]+terrain.Z_OFFSET),p[1]);
+    				gl.glVertex3d(p[0]-terrain.X_OFFSET,terrain.altitude(p[0], p[1]),p[1]-terrain.Z_OFFSET);
     			}
     		}
     		gl.glEnd();
+  //  		gl.glPolygonOffset(0,0);
     	gl.glPopMatrix();  	
     }
     
