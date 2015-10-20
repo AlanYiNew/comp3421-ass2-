@@ -7,7 +7,6 @@ import com.jogamp.opengl.util.gl2.GLUT;
 public class Avatar {
 	private double[] pos;
 	private double[] front;
-	private double[] side;
 	private double angle = 90;
 	private double eye = 0.5;
 	private Terrain terrain;
@@ -26,15 +25,10 @@ public class Avatar {
 		 */
 
 		front = new double[3];
-		side = new double[3];
 
 		front[0] = Math.cos(this.angle);
 		front[2] = -Math.sin(this.angle);
 		front[1] = y;
-
-		side[0] = Math.cos(this.angle - ROTATE_MARGIN);
-		side[2] = -Math.sin(this.angle - ROTATE_MARGIN);
-		side[1] = y;
 
 		torch = new Light();
 		torch.setMode(Light.lightMode.TORCH);
@@ -79,21 +73,9 @@ public class Avatar {
 				+ terrain.getOffset()[1]);
 	}
 
-	public void hmove(double direction) {
-		if (Math.abs(pos[0] + side[0] * direction) >= terrain.getOffset()[0]
-				|| Math.abs(pos[2] + side[2] * direction) >= terrain
-						.getOffset()[1])
-			return;
-
-		pos[0] += side[0] * direction;
-		pos[2] += side[2] * direction;
-		pos[1] = terrain.altitude(pos[0] + terrain.getOffset()[0], pos[2]
-				+ terrain.getOffset()[1]);
-	}
-
 	public void xmove(double direction) {
-		if (Math.abs(pos[0] + side[0] * direction) >= terrain.getOffset()[0]
-				|| Math.abs(pos[2] + side[2] * direction) >= terrain
+		if (Math.abs(pos[0] + front[0] * direction) >= terrain.getOffset()[0]
+				|| Math.abs(pos[2] + front[2] * direction) >= terrain
 						.getOffset()[1])
 			return;
 		pos[0] += direction;
@@ -102,8 +84,8 @@ public class Avatar {
 	}
 
 	public void zmove(double direction) {
-		if (Math.abs(pos[0] + side[0] * direction) >= terrain.getOffset()[0]
-				|| Math.abs(pos[2] + side[2] * direction) >= terrain
+		if (Math.abs(pos[0] + front[0] * direction) >= terrain.getOffset()[0]
+				|| Math.abs(pos[2] + front[2] * direction) >= terrain
 						.getOffset()[1])
 			return;
 		pos[2] += direction;
@@ -115,9 +97,6 @@ public class Avatar {
 		this.angle -= angle;
 		front[0] = Math.cos(this.angle);
 		front[2] = -Math.sin(this.angle);
-
-		side[0] = Math.cos(this.angle - ROTATE_MARGIN);
-		side[2] = -Math.sin(this.angle - ROTATE_MARGIN);
 	}
 
 	public void look(double direction) {
@@ -138,11 +117,9 @@ public class Avatar {
 				(float) front[2] };
 		return _pos;
 	}
-
-	public float[] getSide() {
-		float _pos[] = new float[] { (float) side[0], (float) side[1],
-				(float) side[2] };
-		return _pos;
+	
+	public double getAngle(){
+		return angle;
 	}
 
 	public double getEye() {

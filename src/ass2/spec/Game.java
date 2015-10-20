@@ -152,34 +152,41 @@ public class Game extends JFrame implements GLEventListener, KeyListener {
 	public void keyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_UP:
-			if (camera.getMode() == Camera.cameraMode.FREE)
-				teapot.zmove(-0.1);
+			if(camera.getMode() == Camera.cameraMode.FREE)
+				camera.vmove(0.1);
 			else
 				teapot.vmove(0.1);
+				
 			break;
 		case KeyEvent.VK_DOWN:
-			if (camera.getMode() == Camera.cameraMode.FREE)
-				teapot.zmove(0.1);
+			if(camera.getMode() == Camera.cameraMode.FREE)
+				camera.vmove(-0.1);
 			else
 				teapot.vmove(-0.1);
 			break;
 		case KeyEvent.VK_LEFT:
-			if (camera.getMode() == Camera.cameraMode.FREE)
-				teapot.xmove(-0.1);
+			if(camera.getMode() == Camera.cameraMode.FREE)
+				camera.rotate(-0.1);
 			else
 				teapot.rotate(-0.1);
 			break;
 		case KeyEvent.VK_RIGHT:
-			if (camera.getMode() == Camera.cameraMode.FREE)
-				teapot.xmove(0.1);
+			if(camera.getMode() == Camera.cameraMode.FREE)
+				camera.rotate(0.1);
 			else
 				teapot.rotate(0.1);
 			break;
 		case KeyEvent.VK_Q:
-			teapot.look(0.1);
+			if(camera.getMode() == Camera.cameraMode.FREE)
+				camera.look(0.1);
+			else
+				teapot.look(0.1);
 			break;
 		case KeyEvent.VK_E:
-			teapot.look(-0.1);
+			if(camera.getMode() == Camera.cameraMode.FREE)
+				camera.look(-0.1);
+			else
+				teapot.look(-0.1);
 			break;
 		case KeyEvent.VK_T:
 			teapot.toggleTorch();

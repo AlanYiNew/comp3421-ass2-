@@ -14,6 +14,7 @@ public class Light {
 	private float gloAmb[] = { 0.0f, 0.0f, 0.0f, 1.0f };	
 	
 	private boolean MOVING_SUN = false;
+	private float initialAngle;
 	
 	public static enum lightMode{SUN,TORCH};
 	lightMode mode;
@@ -59,6 +60,7 @@ public class Light {
 	
 	public void setLightPos(float pos[]){
 		lightPos = pos;
+		
 	}
 	
 	public void toggleSun(){

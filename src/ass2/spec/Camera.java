@@ -8,15 +8,20 @@ public class Camera {
 	private float pos[] = null;
 	private float aspectRatio;
 	
-	private final float NEAR = 0.1f;
-	private final float FAR = 10f;
-	private final float fovy = 90;
+	private final float AVATAR_FOVY = 90;
+	private final float FREE_VIEW_FOVY = 90;
+	
+	private float near = 0.1f;
+	private float far = 10f;
+	private float fovy = 90;
 	private float[] eye = new float[3];
 	private float[] center = new float[3];
 	private	float[] cameraUp = {0,1,0};
-	public float[] getCameraUp() {
-		return cameraUp;
-	}
+
+	private float _pos[];
+	private float _front[];
+	private float _look;
+	private double _angle;
 
 	public static enum cameraMode{FIRST,THIRD,FREE};
 	private cameraMode mode;
@@ -33,6 +38,7 @@ public class Camera {
 	public float[] getPos() {
 		return pos;
 	}
+	
 	public void setPos(float[] pos) {
 		this.pos = pos;
 	}
@@ -44,6 +50,7 @@ public class Camera {
 	public void setCamera(GL2 gl){
 		if (mode == cameraMode.THIRD){
 			pos = avatar.getPos();
+			
 			float[] target = avatar.getFront();
 			
 			eye[0] = (float) (pos[0] - target[0]);
@@ -51,14 +58,28 @@ public class Camera {
 			eye[2] = (float) (pos[2] - target[2]);
 			
 			center[0] = (float)(pos[0] + target[0]);
-			center[2] = (float)(pos[2] + target[2]);
 			center[1] = (float)(pos[1] + 0.5 - avatar.getEye());
+			center[2] = (float)(pos[2] + target[2]);
+			
 			
 		} else if(mode == cameraMode.FIRST){
-			float[] target = avatar.getFront();
+			
 			eye = avatar.getPos();
-			center = target;
+			eye[1] += 0.5;
+			float[] front = avatar.getFront();
+			center = new float[]{eye[0] + front[0],(float) (eye[1] + avatar.getEye()),eye[2] + front[2]};
+			
 		} else if(mode == cameraMode.FREE){
+			
+			eye = this._pos;
+			float[] front = _front;
+			
+			if (Math.abs(eye[0]) >= terrain.getOffset()[0] || Math.abs(eye[2]) >= terrain.getOffset()[1])
+				eye[1] = 0.5f;
+			else
+				eye[1] = (float) terrain.altitude(eye[0] + terrain.getOffset()[0], eye[2] + terrain.getOffset()[1]) + 0.5f;
+
+			center = new float[]{eye[0] + front[0],(float) (eye[1]) + _look,eye[2] + front[2]};
 			
 		}
 		
@@ -69,11 +90,11 @@ public class Camera {
 		glu.gluLookAt(eye[0], eye[1], eye[2], center[0], center[1], center[2], 0, 1, 0);
 		gl.glMatrixMode(GL2.GL_PROJECTION);
 		gl.glLoadIdentity();
-		glu.gluPerspective(fovy, aspectRatio, NEAR, FAR);
+		glu.gluPerspective(fovy, aspectRatio, near, far);
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
 	
 	}
-
+	
 	public float[] getEye() {
 		return eye;
 	}
@@ -81,19 +102,57 @@ public class Camera {
 	public float[] getCenter() {
 		return center;
 	}
+	
+	public float[] getCameraUp() {
+		return cameraUp;
+	}
 
-	public void changeMode() {
+	public void changeMode(){
 		if (mode == cameraMode.THIRD){
 			mode = cameraMode.FIRST;
-		}	else if (mode == cameraMode.FIRST){
+			fovy = AVATAR_FOVY;
+			near = 0.1f;
+			far = 10;
+			
+		} else if (mode == cameraMode.FIRST){
 			mode = cameraMode.FREE;
-		}	else{
+			fovy = FREE_VIEW_FOVY;
+			near = 0.1f;
+			far = 15;
+			_pos = avatar.getPos();
+			_front = avatar.getFront();
+			_angle = avatar.getAngle();
+			_look = 0;
+			
+		} else{
 			mode = cameraMode.THIRD;
-		}
-		
+			fovy = AVATAR_FOVY;
+			near = 0.1f;
+			far = 10;
+		}	
 	}
 
 	public cameraMode getMode() {
 		return mode;
+	}
+	
+	public void vmove(double direction){
+		
+		_pos[0] += _front[0] * direction;
+		_pos[2] += _front[2] * direction;
+		
+	}
+	
+	public void rotate(double angle) {
+		this._angle -= angle;
+		_front[0] = (float) Math.cos(this._angle);
+		_front[2] = (float) -Math.sin(this._angle);
+	}
+	
+	public void look(double direction) {
+		if (this._look + direction > 1 || this._look < -1)
+			return;
+
+		this._look += direction;
 	}
 }
