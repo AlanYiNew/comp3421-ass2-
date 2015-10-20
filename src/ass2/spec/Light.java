@@ -7,7 +7,7 @@ import com.jogamp.opengl.util.gl2.GLUT;
 public class Light {
 	private float radius = 12; 
 	private long initialTime;
-	private float lightPos[] = { -radius, 0, 0, 0 };
+	private float lightPos[] = { -radius, 0, 0, 1 };
 	private float lightAmb[] = { 0, 0, 0, 1 };
 	private float lightDiff[] = { 1.0f, 0.85f, 0.7f, 1 };
 	private float lightSpec[] = { 1.0f, 0.85f, 0.7f, 1 };

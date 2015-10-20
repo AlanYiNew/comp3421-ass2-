@@ -107,7 +107,7 @@ public class Game extends JFrame implements GLEventListener, KeyListener {
 		camera.setCamera(gl);
 		light.setUpLight(gl);
 		light.draw(gl);
-		if (camera.getMode() != Camera.cameraMode.firstPerson)
+		if (camera.getMode() != Camera.cameraMode.FIRST)
 			teapot.draw(gl);
 		myTerrain.draw(gl, data);
 		rain.display(gl);
@@ -152,25 +152,25 @@ public class Game extends JFrame implements GLEventListener, KeyListener {
 	public void keyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_UP:
-			if (camera.getMode() == Camera.cameraMode.fixedView)
+			if (camera.getMode() == Camera.cameraMode.FREE)
 				teapot.zmove(-0.1);
 			else
 				teapot.vmove(0.1);
 			break;
 		case KeyEvent.VK_DOWN:
-			if (camera.getMode() == Camera.cameraMode.fixedView)
+			if (camera.getMode() == Camera.cameraMode.FREE)
 				teapot.zmove(0.1);
 			else
 				teapot.vmove(-0.1);
 			break;
 		case KeyEvent.VK_LEFT:
-			if (camera.getMode() == Camera.cameraMode.fixedView)
+			if (camera.getMode() == Camera.cameraMode.FREE)
 				teapot.xmove(-0.1);
 			else
 				teapot.rotate(-0.1);
 			break;
 		case KeyEvent.VK_RIGHT:
-			if (camera.getMode() == Camera.cameraMode.fixedView)
+			if (camera.getMode() == Camera.cameraMode.FREE)
 				teapot.xmove(0.1);
 			else
 				teapot.rotate(0.1);
