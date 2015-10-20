@@ -244,11 +244,11 @@ public class Terrain {
 		for (Tree i:myTrees){
 			i.draw(gl, 4);
 		}
-		
+		gl.glDisable(GL2.GL_TEXTURE_2D);
 		for (Road r:myRoads){
 			r.draw(gl);
 		}
-		gl.glDisable(GL2.GL_TEXTURE_2D);
+		
 	}
 
 	// Must be called in the init state

@@ -65,16 +65,12 @@ public class Rain{
 				float[] p3 = MathUtil.add(rainPos, MathUtil.scale(MathUtil.add(ca,cb),0.01f));
 				float[] p4 = MathUtil.sub(rainPos, MathUtil.scale(MathUtil.sub(ca,cb),0.01f));
 				gl.glMultiTexCoord2d(GL_TEXTURE1,1, 1);
-	            //gl.glVertex3f(px + 0.0125f, py + 0.0125f, pz); // Top Right
 	            gl.glVertex3f(p1[0],p1[1],p1[2]);
 	            gl.glMultiTexCoord2d(GL_TEXTURE1,0, 1);
-	            //gl.glVertex3f(px - 0.0125f, py + 0.0125f, pz); // Top Left
 	            gl.glVertex3f(p2[0],p2[1],p2[2]);
 	            gl.glMultiTexCoord2d(GL_TEXTURE1,1, 0);
-	            //gl.glVertex3f(px + 0.0125f, py - 0.0125f, pz); // Bottom Right
 	            gl.glVertex3f(p4[0],p4[1],p4[2]);
 	            gl.glMultiTexCoord2d(GL_TEXTURE1,0, 0);
-	            //gl.glVertex3f(px - 0.0125f, py - 0.0125f, pz); // Bottom Left
 	            gl.glVertex3f(p3[0],p3[1],p3[2]);
 	            gl.glEnd();
 	            particles[i].update(this);
