@@ -17,6 +17,12 @@ public class Creature {
 	private FloatBuffer textureData;
 	private final int FloatBYTE = 4;
 
+	
+	private int shaderprogram;
+	
+	private static final String VERTEX_SHADER = "vertex_shader.glsl";
+    private static final String FRAGMENT_SHADER = "fragment_shader.glsl";
+	
 	public void init(GL2 gl) {
 		creaturePosition = new float[] { 
 				-0.5f, 0, 0.5f,// front
@@ -75,6 +81,11 @@ public class Creature {
 				0, -1f, 0,
 				0, -1f, 0
 		};
+		try{
+			shaderprogram = Shader.initShaders(gl,VERTEX_SHADER,FRAGMENT_SHADER);
+		}catch(Exception e){
+		    e.printStackTrace();       	
+		}
 
 		creatureTexture = new float[] { 0, 0, 1, 0, 1, 1, 0, 1 };
 
@@ -101,7 +112,9 @@ public class Creature {
 	}
 
 	public void draw(GL2 gl,int textureArray[]) {
+		
 		// Bind the buffer we want to use
+				gl.glUseProgram(shaderprogram);
 				gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, bufferIds[0]);
 
 				// Enable three vertex arrays: coordinates, normal and texture.
@@ -133,5 +146,7 @@ public class Creature {
 				gl.glDisableClientState(GL2.GL_TEXTURE_COORD_ARRAY);
 
 				gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);
+				gl.glUseProgram(0);
+				
 	}
 }

@@ -252,7 +252,7 @@ public class Terrain {
 		textureArray[1] = myTexture_creature.getTextureId();
 		gl.glDisable(GL2.GL_TEXTURE_2D);	
 		gl.glPushMatrix();
-		gl.glTranslated(0,4.5,0);
+		gl.glTranslated(2.5,this.altitude(2.5 + X_OFFSET,2.5 + Z_OFFSET ),2.5);
 		creature.init(gl);
 		creature.draw(gl,textureArray);
 		gl.glPopMatrix();
@@ -269,7 +269,7 @@ public class Terrain {
 		// Texture setting
 		myTexture_branch = new MyTexture(gl, "branch.jpg", "jpg",true);
 		myTexture_grass = new MyTexture(gl, "grass.jpg", "jpg", true);
-		myTexture_creature = new MyTexture(gl, "creaTure.png", "png", true);
+		myTexture_creature = new MyTexture(gl, "creature.png", "png", true);
 		
 		//The third argument should be GL_MODULATE if light is needed in the scene
 		gl.glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE,

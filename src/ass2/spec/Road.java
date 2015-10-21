@@ -390,7 +390,7 @@ public class Road {
 			for (int i = 0; i < cs.size() - 1; i++) {
 				gl.glBindTexture(GL2.GL_TEXTURE_2D, myTexture.getTextureId());
 				gl.glTexEnvi(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE,
-						GL2.GL_REPLACE);
+						GL2.GL_MODULATE);
 				CrossSection ms0 = cs.get(i);
 				CrossSection ms1 = cs.get(i + 1);
 
@@ -415,10 +415,10 @@ public class Road {
 					gl.glNormal3d(f2[0], f2[1], f2[2]);
 					gl.glMultiTexCoord2d(GL.GL_TEXTURE2, 1, 1);
 					gl.glVertex3d(p00[0], p00[1], p00[2]);
-					gl.glMultiTexCoord2d(GL.GL_TEXTURE2, 0, 1);
-					gl.glVertex3d(p10[0], p10[1], p10[2]);
 					gl.glMultiTexCoord2d(GL.GL_TEXTURE2, 1, 0);
 					gl.glVertex3d(p11[0], p11[1], p11[2]);
+					gl.glMultiTexCoord2d(GL.GL_TEXTURE2, 0, 1);
+					gl.glVertex3d(p10[0], p10[1], p10[2]);
 				}
 				gl.glEnd();
 			}
@@ -427,7 +427,7 @@ public class Road {
 		for(int i = 0; i < crossSecVertices.size()-1; i++){
 			gl.glBindTexture(GL2.GL_TEXTURE_2D, myTexture.getTextureId());
 			gl.glTexEnvi(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE,
-					GL2.GL_REPLACE);
+					GL2.GL_MODULATE);
 			CrossSection ms0 = crossSecVertices.get(i);
 			CrossSection ms1 = crossSecVertices.get(i + 1);
 
@@ -444,17 +444,17 @@ public class Road {
 				gl.glNormal3d(f1[0], f1[1], f1[2]);
 				gl.glMultiTexCoord2d(GL.GL_TEXTURE2, 1, 1);
 				gl.glVertex3d(p00[0], p00[1], p00[2]);
-				gl.glMultiTexCoord2d(GL.GL_TEXTURE2, 0, 1);
-				gl.glVertex3d(p11[0], p11[1], p11[2]);
 				gl.glMultiTexCoord2d(GL.GL_TEXTURE2, 1, 0);
 				gl.glVertex3d(p01[0], p01[1], p01[2]);
+				gl.glMultiTexCoord2d(GL.GL_TEXTURE2, 0, 1);
+				gl.glVertex3d(p11[0], p11[1], p11[2]);
 
 				gl.glNormal3d(f2[0], f2[1], f2[2]);
 				gl.glMultiTexCoord2d(GL.GL_TEXTURE2, 1, 0);
 				gl.glVertex3d(p00[0], p00[1], p00[2]);
 				gl.glMultiTexCoord2d(GL.GL_TEXTURE2, 0, 1);
 				gl.glVertex3d(p10[0], p10[1], p10[2]);
-				gl.glMultiTexCoord2d(GL.GL_TEXTURE2, 1, 1);
+				gl.glMultiTexCoord2d(GL.GL_TEXTURE2, 1, 1);		
 				gl.glVertex3d(p11[0], p11[1], p11[2]);
 			}
 			gl.glEnd();
