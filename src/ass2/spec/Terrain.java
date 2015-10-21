@@ -46,6 +46,7 @@ public class Terrain {
 	float Z_OFFSET;
 	MyTexture myTexture_grass;
 	MyTexture myTexture_branch;
+	MyTexture myTexture_creature;
 	Creature creature = new Creature();
 	
 	final static int FloatBYTE = 4;
@@ -248,18 +249,17 @@ public class Terrain {
 		for (Tree i:myTrees){
 			i.draw(gl, 4, textureArray);
 		}
-		gl.glDisable(GL2.GL_TEXTURE_2D);
-		for (Road r:myRoads){
+		textureArray[1] = myTexture_creature.getTextureId();
+		gl.glDisable(GL2.GL_TEXTURE_2D);	
+		gl.glPushMatrix();
+		gl.glTranslated(0,4.5,0);
+		creature.init(gl);
+		creature.draw(gl,textureArray);
+		gl.glPopMatrix();
+		
+		for (Road r : myRoads) {
 			r.draw(gl);
 		}
-		
-		/*gl.glPushMatrix();
-		//gl.glLoadIdentity();
-		gl.glTranslated(0,4.5,0);
-		gl.glRotated(-90,0,1,0);
-		creature.init(gl);
-		creature.draw(gl);
-		gl.glPopMatrix();*/
 	}
 
 	// Must be called in the init state
@@ -269,6 +269,7 @@ public class Terrain {
 		// Texture setting
 		myTexture_branch = new MyTexture(gl, "branch.jpg", "jpg",true);
 		myTexture_grass = new MyTexture(gl, "grass.jpg", "jpg", true);
+		myTexture_creature = new MyTexture(gl, "creaTure.png", "png", true);
 		
 		//The third argument should be GL_MODULATE if light is needed in the scene
 		gl.glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE,

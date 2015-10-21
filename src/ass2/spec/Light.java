@@ -24,7 +24,6 @@ public class Light {
 	lightMode mode;
 	
 	public Light(Terrain t){
-		initialTime = System.currentTimeMillis();
 		current = day;
 		mode = lightMode.SUN;
 		myTerrain = t;
@@ -44,9 +43,9 @@ public class Light {
 		if(mode == lightMode.SUN && SUN_MOVE){
 			double currTime = System.currentTimeMillis();
 			double difference = (currTime - initialTime)/8000;
-			lightPos[0] = (float) (Math.cos(difference + apha)*Math.cos(zeta)); 
-			lightPos[2] = (float) (Math.cos(difference + apha)*Math.sin(zeta)); 
-			lightPos[1] = (float) (r2 * Math.sin(zeta));
+			lightPos[0] = (float) (r1*Math.cos(difference + apha)*-Math.cos(zeta)); 
+			lightPos[2] = (float) (r1*Math.cos(difference + apha)*-Math.sin(zeta)); 
+			lightPos[1] = (float) (r2 * Math.sin(difference + apha));
 				if	((float)Math.abs( Math.sin(difference)) >= 0.7){
 					lightDiff[2] = (float)Math.abs( Math.sin(difference));
 					lightSpec[2] = (float)Math.abs( Math.sin(difference));
@@ -59,7 +58,6 @@ public class Light {
 		}else if(mode == lightMode.TORCH){
 			
 		}
-		System.out.println("Set up light" + lightPos[0] + " " + lightPos[1] + " " + lightPos[2]);		
 		gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, lightPos, 0);
 		gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, lightDiff, 0);
 		gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_SPECULAR, lightSpec, 0);
@@ -72,11 +70,12 @@ public class Light {
 	
 	public void setLightPos(float pos[]){
 		
-		lightPos = new float[]{pos[0] - myTerrain.X_OFFSET,pos[1],pos[2] - myTerrain.Z_OFFSET};
+		lightPos = new float[]{pos[0] - myTerrain.X_OFFSET,pos[1],pos[2] - myTerrain.Z_OFFSET,0};
 		r1 = (float) Math.sqrt(lightPos[0]*lightPos[0]+lightPos[2]*lightPos[2]);
-		apha = - (float) Math.atan(pos[1]/r1);
-		zeta = (float) Math.atan(pos[2]/pos[0]);
-		r2 = (float) Math.sqrt(r1*r1 + pos[1] * pos[1]);
+		apha = (float) Math.atan(lightPos[1]/r1);
+		System.out.println(lightPos[2] +" " +lightPos[0]);
+		zeta = (float) Math.atan(9.5/10.5);
+		r2 = (float) Math.sqrt(r1*r1 + lightPos[1] * lightPos[1]);
 	}
 
 	public void draw(GL2 gl) {
@@ -92,5 +91,6 @@ public class Light {
 
 	public void toggleSun(){
 		SUN_MOVE = !SUN_MOVE;
+		initialTime = System.currentTimeMillis();
 	}
 }
