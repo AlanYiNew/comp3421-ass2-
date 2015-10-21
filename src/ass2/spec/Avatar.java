@@ -29,10 +29,9 @@ public class Avatar {
 		front[0] = Math.cos(this.angle);
 		front[2] = -Math.sin(this.angle);
 		front[1] = y;
-
-		torch = new Light();
-		torch.setMode(Light.lightMode.TORCH);
 		this.terrain = terrain;
+		torch = new Light(terrain);
+		torch.setMode(Light.lightMode.TORCH);
 	}
 
 	public void toggleTorch() {

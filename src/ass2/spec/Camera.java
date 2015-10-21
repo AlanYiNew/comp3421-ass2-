@@ -9,7 +9,7 @@ public class Camera {
 	private float aspectRatio;
 	
 	private final float AVATAR_FOVY = 90;
-	private final float FREE_VIEW_FOVY = 90;
+	private final float FREE_VIEW_FOVY = 100;
 	
 	private float near = 0.1f;
 	private float far = 10f;
@@ -150,7 +150,7 @@ public class Camera {
 	}
 	
 	public void look(double direction) {
-		if (this._look + direction > 1 || this._look < -1)
+		if (this._look + direction > 1 || this._look + direction < -1)
 			return;
 
 		this._look += direction;
