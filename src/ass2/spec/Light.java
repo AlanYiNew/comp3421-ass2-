@@ -18,6 +18,8 @@ public class Light {
 	private Terrain myTerrain;
 	private float r1,r2,apha,zeta;
 	
+	private boolean SUN_MOVE = false;
+	
 	public static enum lightMode{SUN,TORCH};
 	lightMode mode;
 	
@@ -25,6 +27,7 @@ public class Light {
 		initialTime = System.currentTimeMillis();
 		current = day;
 		mode = lightMode.SUN;
+		myTerrain = t;
 	}
 	
 	public Light(Light.lightMode m){
@@ -36,8 +39,9 @@ public class Light {
 	}
 	
 	public void setUpLight(GL2 gl) {
-		
-		if(mode == lightMode.SUN){
+		gl.glPushMatrix();
+//		gl.glLoadIdentity();
+		if(mode == lightMode.SUN && SUN_MOVE){
 			double currTime = System.currentTimeMillis();
 			double difference = (currTime - initialTime)/8000;
 			lightPos[0] = (float) (Math.cos(difference + apha)*Math.cos(zeta)); 
@@ -55,17 +59,19 @@ public class Light {
 		}else if(mode == lightMode.TORCH){
 			
 		}
-				
+		System.out.println("Set up light" + lightPos[0] + " " + lightPos[1] + " " + lightPos[2]);		
 		gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, lightPos, 0);
 		gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, lightDiff, 0);
 		gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_SPECULAR, lightSpec, 0);
 		gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_AMBIENT, lightAmb, 0);
 
 		gl.glLightModelfv(GL2.GL_LIGHT_MODEL_AMBIENT, gloAmb, 0);
-		gl.glLightModeli(GL2.GL_LIGHT_MODEL_TWO_SIDE, GL2.GL_TRUE);		
+		gl.glLightModeli(GL2.GL_LIGHT_MODEL_TWO_SIDE, GL2.GL_TRUE);
+		gl.glPopMatrix();
 	}
 	
 	public void setLightPos(float pos[]){
+		
 		lightPos = new float[]{pos[0] - myTerrain.X_OFFSET,pos[1],pos[2] - myTerrain.Z_OFFSET};
 		r1 = (float) Math.sqrt(lightPos[0]*lightPos[0]+lightPos[2]*lightPos[2]);
 		apha = - (float) Math.atan(pos[1]/r1);
@@ -85,22 +91,6 @@ public class Light {
 	}
 
 	public void toggleSun(){
-		
-	}
-	
-	private void setinitialLight(float pos[]){
-		
-	}
-	
-	private void setDayStartTime(){
-		lightAmb = new float[]{ 0, 0, 0, 1 };
-		lightDiff = new float[]{ 1.0f, 0.85f, 0.7f, 1 };
-		lightSpec = new float[]{ 1.0f, 0.85f, 0.7f, 1 };	
-	}
-	
-	private void setDayEndTime(){
-		lightAmb = new float[]{ 0, 0, 0, 1 };
-		lightDiff = new float[]{ 0, 0, 0, 1 };
-		lightSpec = new float[]{ 0, 0, 0, 1 };	
+		SUN_MOVE = !SUN_MOVE;
 	}
 }

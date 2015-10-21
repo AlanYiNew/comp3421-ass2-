@@ -30,7 +30,7 @@ public class Avatar {
 		front[2] = -Math.sin(this.angle);
 		front[1] = y;
 		this.terrain = terrain;
-		torch = new Light();
+		torch = new Light(terrain);
 		torch.setMode(Light.lightMode.TORCH);
 	}
 

@@ -45,7 +45,10 @@ public class Game extends JFrame implements GLEventListener, KeyListener {
 		teapot = new Avatar(0, myTerrain.altitude(offSet[1], offSet[0]), 0,
 				myTerrain);
 		camera = new Camera(teapot, myTerrain);
-		light = new Light();
+		light = new Light(myTerrain);
+		float[] sunpos = new float[]{myTerrain.getSunlight()[0],myTerrain.getSunlight()[1],myTerrain.getSunlight()[2],0};
+		light.setLightPos(sunpos);
+		
 		rain = new Rain(camera,myTerrain);
 	}
 
@@ -190,6 +193,9 @@ public class Game extends JFrame implements GLEventListener, KeyListener {
 			break;
 		case KeyEvent.VK_R:
 			rain.rainChange();
+			break;
+		case KeyEvent.VK_M:
+			light.toggleSun();
 			break;
 		}
 	}
