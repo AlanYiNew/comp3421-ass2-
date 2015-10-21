@@ -18,26 +18,63 @@ public class Creature {
 	private final int FloatBYTE = 4;
 
 	public void init(GL2 gl) {
-		creaturePosition = new float[] { -0.5f, 0, 0.5f,// front
-				0.5f, 0, 0.5f, 0.5f, 1, 0.5f, -0.5f, 1, 0.5f,
+		creaturePosition = new float[] { 
+				-0.5f, 0, 0.5f,// front
+				0.5f, 0, 0.5f, 
+				0.5f, 1, 0.5f, 
+				-0.5f, 1, 0.5f,
 
 				0.5f, 0, 0.5f,// right
-				0.5f, 0, -0.5f, 0.5f, 1, -0.5f, 0.5f, 1, 0.5f,
+				0.5f, 0, -0.5f, 
+				0.5f, 1, -0.5f, 
+				0.5f, 1, 0.5f,
 
 				-0.5f, 1, 0.5f,// top
-				0.5f, 1, 0.5f, 0.5f, 1, -0.5f, -0.5f, 1, -0.5f,
+				0.5f, 1, 0.5f, 
+				0.5f, 1, -0.5f, 
+				-0.5f, 1, -0.5f,
 
 				-0.5f, 0, 0.5f,// left
-				-0.5f, 1, 0.5f, -0.5f, 1, -0.5f, -0.5f, 0, -0.5f,
+				-0.5f, 1, 0.5f, 
+				-0.5f, 1, -0.5f, 
+				-0.5f, 0, -0.5f,
 
 				-0.5f, 0, -0.5f,// back
-				-0.5f, 1, -0.5f, 0.5f, 1, -0.5f, 0.5f, 0, -0.5f,
+				-0.5f, 1, -0.5f,
+				0.5f, 1, -0.5f, 
+				0.5f, 0, -0.5f,
 
 				-0.5f, 0, -0.5f,// bottom
-				0.5f, 0, -0.5f, 0.5f, 0, 0.5f, -0.5f, 0, 0.5f };
-
-		creatureNormal = new float[] { 0, 0, 1f, 1f, 0, 0, 0, 1f, 0, -1f, 0, 0,
-				0, 0, -1f, 0, -1f, 0 };
+				0.5f, 0, -0.5f, 
+				0.5f, 0, 0.5f, 
+				-0.5f, 0, 0.5f };
+		
+		creatureNormal = new float[] { 
+				0, 0, 1f, 
+				0, 0, 1f, 
+				0, 0, 1f, 
+				0, 0, 1f, 
+				1f, 0, 0, 
+				1f, 0, 0, 
+				1f, 0, 0, 
+				1f, 0, 0, 
+				0, 1f, 0, 
+				0, 1f, 0, 
+				0, 1f, 0, 
+				0, 1f, 0, 
+				-1f, 0, 0,
+				-1f, 0, 0,
+				-1f, 0, 0,
+				-1f, 0, 0,
+				0, 0, -1f, 
+				0, 0, -1f, 
+				0, 0, -1f, 
+				0, 0, -1f, 
+				0, -1f, 0,
+				0, -1f, 0,
+				0, -1f, 0,
+				0, -1f, 0
+		};
 
 		creatureTexture = new float[] { 0, 0, 1, 0, 1, 1, 0, 1 };
 
@@ -86,7 +123,7 @@ public class Creature {
 				gl.glTexCoordPointer(2, GL2.GL_FLOAT, 0,
 						(creaturePosition.length + creatureNormal.length) * FloatBYTE);
 
-				gl.glDrawArrays(GL2.GL_QUADS, 0, 8);
+				gl.glDrawArrays(GL2.GL_QUADS, 0, 24);
 
 				gl.glDisableClientState(GL2.GL_VERTEX_ARRAY);
 				gl.glDisableClientState(GL2.GL_NORMAL_ARRAY);
