@@ -7,7 +7,7 @@ import com.jogamp.opengl.util.gl2.GLUT;
 public class Avatar {
 	private double[] pos;
 	private double[] front;
-	private double angle = 0;
+	private double angle = Math.PI/2;
 	private double eye = 0.5;
 	private Terrain terrain;
 

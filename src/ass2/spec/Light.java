@@ -15,13 +15,16 @@ public class Light {
 	private float lightDiff[] = { 1.0f, 0.85f, 0.7f, 1 };
 	private float lightSpec[] = { 1.0f, 0.85f, 0.7f, 1 };
 	private float gloAmb[] = { 0.0f, 0.0f, 0.0f, 1.0f };	
+	private Terrain myTerrain;
+	private float r1,r2,apha,zeta;
 	
 	public static enum lightMode{SUN,TORCH};
 	lightMode mode;
 	
-	public Light(){
+	public Light(Terrain t){
 		initialTime = System.currentTimeMillis();
 		current = day;
+		mode = lightMode.SUN;
 	}
 	
 	public Light(Light.lightMode m){
@@ -37,8 +40,9 @@ public class Light {
 		if(mode == lightMode.SUN){
 			double currTime = System.currentTimeMillis();
 			double difference = (currTime - initialTime)/8000;
-			lightPos[0] = (float) (-radius*Math.cos(difference));
-			lightPos[1] = (float) (radius*Math.sin(difference));
+			lightPos[0] = (float) (Math.cos(difference + apha)*Math.cos(zeta)); 
+			lightPos[2] = (float) (Math.cos(difference + apha)*Math.sin(zeta)); 
+			lightPos[1] = (float) (r2 * Math.sin(zeta));
 				if	((float)Math.abs( Math.sin(difference)) >= 0.7){
 					lightDiff[2] = (float)Math.abs( Math.sin(difference));
 					lightSpec[2] = (float)Math.abs( Math.sin(difference));
@@ -62,15 +66,17 @@ public class Light {
 	}
 	
 	public void setLightPos(float pos[]){
-		lightPos = pos;
+		lightPos = new float[]{pos[0] - myTerrain.X_OFFSET,pos[1],pos[2] - myTerrain.Z_OFFSET};
+		r1 = (float) Math.sqrt(lightPos[0]*lightPos[0]+lightPos[2]*lightPos[2]);
+		apha = - (float) Math.atan(pos[1]/r1);
+		zeta = (float) Math.atan(pos[2]/pos[0]);
+		r2 = (float) Math.sqrt(r1*r1 + pos[1] * pos[1]);
 	}
 
 	public void draw(GL2 gl) {
 		gl.glPushMatrix();
 		GLUT glut = new GLUT();
-		//System.out.println(lightPos[0]+" "+lightPos[1]);
 		gl.glTranslated(lightPos[0],lightPos[1],lightPos[2]);
-		//gl.glTranslated(0,0,4);
 		gl.glFrontFace(GL2.GL_CW);
 		glut.glutSolidSphere(0.1,50,50);
 		gl.glFrontFace(GL2.GL_CCW);
@@ -78,6 +84,14 @@ public class Light {
 		gl.glPopMatrix();
 	}
 
+	public void toggleSun(){
+		
+	}
+	
+	private void setinitialLight(float pos[]){
+		
+	}
+	
 	private void setDayStartTime(){
 		lightAmb = new float[]{ 0, 0, 0, 1 };
 		lightDiff = new float[]{ 1.0f, 0.85f, 0.7f, 1 };
