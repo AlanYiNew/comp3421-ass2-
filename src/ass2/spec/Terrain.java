@@ -255,7 +255,8 @@ public class Terrain {
 		
 		gl.glPushMatrix();
 		//gl.glLoadIdentity();
-		gl.glTranslated(0,4,0);
+		gl.glTranslated(0,4.5,0);
+		gl.glRotated(-90,0,1,0);
 		creature.init(gl);
 		creature.draw(gl);
 		gl.glPopMatrix();

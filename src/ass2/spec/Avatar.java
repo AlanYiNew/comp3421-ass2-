@@ -7,7 +7,7 @@ import com.jogamp.opengl.util.gl2.GLUT;
 public class Avatar {
 	private double[] pos;
 	private double[] front;
-	private double angle = 90;
+	private double angle = 0;
 	private double eye = 0.5;
 	private Terrain terrain;
 
@@ -15,7 +15,7 @@ public class Avatar {
 	private boolean onTorch = false;
 
 	private static float POSITION_OFFSET = 0.2f;
-	private static float ROTATE_MARGIN = 90;
+	private static float ROTATE_MARGIN = 0;
 	private static float AVATAR_RATIO = 0.3f;
 
 	public Avatar(double x, double y, double z, Terrain terrain) {
@@ -30,7 +30,7 @@ public class Avatar {
 		front[2] = -Math.sin(this.angle);
 		front[1] = y;
 		this.terrain = terrain;
-		torch = new Light(terrain);
+		torch = new Light();
 		torch.setMode(Light.lightMode.TORCH);
 	}
 
