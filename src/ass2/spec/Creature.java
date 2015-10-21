@@ -100,7 +100,7 @@ public class Creature {
 				creatureTexture.length * FloatBYTE, textureData);
 	}
 
-	public void draw(GL2 gl) {
+	public void draw(GL2 gl,int textureArray[]) {
 		// Bind the buffer we want to use
 				gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, bufferIds[0]);
 
@@ -122,9 +122,12 @@ public class Creature {
 				//specify the pointer to refer to the texture data in GL_ARRAY_BUFFER
 				gl.glTexCoordPointer(2, GL2.GL_FLOAT, 0,
 						(creaturePosition.length + creatureNormal.length) * FloatBYTE);
-
-				gl.glDrawArrays(GL2.GL_QUADS, 0, 24);
-
+				gl.glEnable(GL2.GL_TEXTURE_2D);
+				gl.glBindTexture(GL2.GL_TEXTURE_2D, textureArray[1]);
+				gl.glDrawArrays(GL2.GL_QUADS, 0, 4);
+				gl.glBindTexture(GL2.GL_TEXTURE_2D, textureArray[0]);
+				gl.glDisable(GL2.GL_TEXTURE_2D);
+				gl.glDrawArrays(GL2.GL_QUADS, 4, 20);
 				gl.glDisableClientState(GL2.GL_VERTEX_ARRAY);
 				gl.glDisableClientState(GL2.GL_NORMAL_ARRAY);
 				gl.glDisableClientState(GL2.GL_TEXTURE_COORD_ARRAY);
