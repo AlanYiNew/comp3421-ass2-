@@ -10,7 +10,7 @@ public class Torch {
 	private float lightAmb[] = { 0.5f, 0.5f, 0.5f, 1 };
 	private float lightDiff[] = { 1.0f, 1f, 1f, 1 };
 	private float lightSpec[] = { 1.0f, 1f, 1f, 1 };
-	private float gloAmb[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	private float gloAmb[] = { 0.5f, 0.5f, 0.5f, 1.0f };
 	private float spotAngle = 45;
 	private float spotExponent = 1;
 	private Terrain myTerrain;
