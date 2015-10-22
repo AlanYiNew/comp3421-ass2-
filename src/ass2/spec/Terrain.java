@@ -10,6 +10,7 @@ import java.io.Reader;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -47,7 +48,7 @@ public class Terrain {
 	MyTexture myTexture_grass;
 	MyTexture myTexture_branch;
 	MyTexture myTexture_creature;
-	Creature creature = new Creature();
+	ArrayList<Creature> creatures;
 	
 	final static int FloatBYTE = 4;
 
@@ -69,6 +70,10 @@ public class Terrain {
 		bufferIds = new int[1];
 		X_OFFSET = (width - 1.0f)/2;
 		Z_OFFSET = (depth - 1.0f)/2;
+		creatures = new ArrayList<Creature>();
+		for (int i = 0; i < width/3; i++){
+			creatures.add(new Creature());
+		}
 	}
 
 	public Terrain(Dimension size) {
@@ -249,13 +254,23 @@ public class Terrain {
 		for (Tree i:myTrees){
 			i.draw(gl, 4, textureArray);
 		}
-		textureArray[1] = myTexture_creature.getTextureId();
 		gl.glDisable(GL2.GL_TEXTURE_2D);	
-		gl.glPushMatrix();
-		gl.glTranslated(2.5,this.altitude(2.5 + X_OFFSET,2.5 + Z_OFFSET ),2.5);
-		creature.init(gl);
-		creature.draw(gl,textureArray,lightMode);
-		gl.glPopMatrix();
+		
+		textureArray[1] = myTexture_creature.getTextureId();
+		Random rand = new Random();
+		float maxw = (float) (mySize.getWidth()/2);
+		float minw = (float) (-mySize.getWidth()/2);
+		float maxl = (float) (mySize.getHeight()/2);
+		float minl = (float) (-mySize.getHeight()/2);
+		for (Creature i :creatures){
+			gl.glPushMatrix();
+			float x = rand.nextFloat() * (maxw - minw) + minw;
+			float z = rand.nextFloat() * (maxl - minl) + minl;
+			float y = (float) this.altitude(x+X_OFFSET, z+Z_OFFSET);
+			gl.glTranslated(x,y,z);
+			i.draw(gl,textureArray,lightMode);
+			gl.glPopMatrix();
+		}
 		
 		for (Road r : myRoads) {
 			r.draw(gl);
@@ -388,6 +403,10 @@ public class Terrain {
 				GL2.GL_ARRAY_BUFFER,
 				(terrainPositions.length + terrainNormals.length) * FloatBYTE,
 				textureCoordinates.length * FloatBYTE, textureData);
+		
+		for (Creature i:creatures){
+			i.init(gl);
+		}
 	}
 
 	public int[] getBufferIds() {
