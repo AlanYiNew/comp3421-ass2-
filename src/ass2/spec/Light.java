@@ -61,7 +61,7 @@ public class Light {
 		r1 = (float) Math.sqrt(lightPos[0] * lightPos[0] + lightPos[2]
 				* lightPos[2]);
 		apha = (float) Math.atan(lightPos[1] / r1);
-		zeta = (float) Math.atan(Math.abs(lightPos[2]) / Math.abs(lightPos[0]));
+		zeta = (float) Math.atan(lightPos[2] / lightPos[0]);
 		r2 = (float) Math.sqrt(r1 * r1 + lightPos[1] * lightPos[1]);
 	}
 
@@ -81,7 +81,7 @@ public class Light {
 		r1 = (float) Math.sqrt(lightPos[0] * lightPos[0] + lightPos[2]
 				* lightPos[2]);
 		apha = (float) Math.atan(lightPos[1] / r1);
-		zeta = (float) Math.atan(Math.abs(lightPos[2]) / Math.abs(lightPos[0]));
+		zeta = (float) Math.atan(lightPos[2] / lightPos[0]);
 		r2 = (float) Math.sqrt(r1 * r1 + lightPos[1] * lightPos[1]);
 		initialTime = System.currentTimeMillis();
 	}
