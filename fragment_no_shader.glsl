@@ -2,6 +2,7 @@
 
 in vec3 normal;
 in vec4 world;
+ 
 uniform int light;
 
 void main (void) {	
