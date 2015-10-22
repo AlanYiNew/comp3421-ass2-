@@ -7,6 +7,6 @@ out vec2 texture;
 void main (void) {	
     world = gl_ModelViewMatrix * gl_Vertex;
     normal = vec3(normalize(gl_NormalMatrix * normalize(gl_Normal)));
-	gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
-	
+	texture = vec2(gl_MultiTexCoord0);
+	gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;	
 }

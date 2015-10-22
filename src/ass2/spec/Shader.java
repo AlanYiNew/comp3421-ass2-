@@ -30,7 +30,6 @@ public class Shader {
     private int myType;
     private int myID;
     
-    //read file into a string
     public Shader(int type, File sourceFile) throws IOException {
     	myType = type;
     	try {
@@ -62,12 +61,10 @@ public class Shader {
     }
 
     public void compile(GL2 gl) {
-    	//printShader(); //debugging
         myID = gl.glCreateShader(myType);
         gl.glShaderSource(myID, 1, mySource, new int[] { mySource[0].length() }, 0);
         gl.glCompileShader(myID);
 
-        //Check compile status.
         int[] compiled = new int[1];
         gl.glGetShaderiv(myID, GL2ES2.GL_COMPILE_STATUS, compiled, 0);
         if (compiled[0] == 0) {
@@ -89,8 +86,6 @@ public class Shader {
         Shader fragmentShader = new Shader(GL2.GL_FRAGMENT_SHADER, new File(fs));
         fragmentShader.compile(gl);
         
-        //Each shaderProgram must have
-        //one vertex shader and one fragment shader.
         int shaderprogram = gl.glCreateProgram();
         gl.glAttachShader(shaderprogram, vertexShader.getID());
         gl.glAttachShader(shaderprogram, fragmentShader.getID());

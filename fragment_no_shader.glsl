@@ -2,9 +2,7 @@
 
 in vec3 normal;
 in vec4 world;
-in vec2 texture;
 uniform int light;
-uniform sampler2D color;
 
 void main (void) {	
     vec4 ambient, globalAmbient;
@@ -37,6 +35,6 @@ void main (void) {
 	}
 	
 	specular = clamp(specular,0,1);
-    gl_FragColor = texture2D(color,texture) * (gl_FrontMaterial.emission + globalAmbient + ambient + diffuse) + specular;
+    gl_FragColor = gl_FrontMaterial.emission + globalAmbient + ambient + diffuse + specular;
 	
 }

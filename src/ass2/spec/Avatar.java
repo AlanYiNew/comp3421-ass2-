@@ -10,13 +10,12 @@ public class Avatar {
 	private double angle = Math.PI/2;
 	private double eye = 0.5;
 	private Terrain terrain;
-
-	private Light torch;
 	private boolean onTorch = false;
 
 	private static float POSITION_OFFSET = 0.2f;
-	private static float ROTATE_MARGIN = 0;
 	private static float AVATAR_RATIO = 0.3f;
+	
+	public Torch torch = null;
 
 	public Avatar(double x, double y, double z, Terrain terrain) {
 		pos = new double[] { x, y, z };
@@ -25,13 +24,11 @@ public class Avatar {
 		 */
 
 		front = new double[3];
-
 		front[0] = Math.cos(this.angle);
 		front[2] = -Math.sin(this.angle);
 		front[1] = y;
 		this.terrain = terrain;
-		torch = new Light(terrain);
-		torch.setMode(Light.lightMode.TORCH);
+		torch = new Torch(terrain);
 	}
 
 	public void toggleTorch() {
@@ -42,20 +39,29 @@ public class Avatar {
 		gl.glPushMatrix();
 		{
 			if (onTorch) {
-				float _pos[] = new float[] { (float) (pos[0] + front[0]),
-						(float) (pos[1] + 0.5), (float) (pos[2] + front[2]), 1 };
-				torch.setLightPos(_pos);
-				torch.setUpLight(gl);
-				torch.draw(gl);
+				gl.glDisable(GL2.GL_LIGHT0);
+				gl.glEnable(GL2.GL_LIGHT1);
+
+				torch.setPos(pos, front);
+				torch.setLight(gl);  
+
+			}else{
+				gl.glDisable(GL2.GL_LIGHT1);
+				gl.glEnable(GL2.GL_LIGHT0);	
+
 			}
 
 			gl.glTranslated(pos[0], pos[1] + POSITION_OFFSET, pos[2]);
 			gl.glRotated(Math.toDegrees(angle), 0, 1, 0);
-
+			
+			/*if(onTorch)
+				torch.draw(gl);
+			*/
 			GLUT glut = new GLUT();
 			gl.glFrontFace(GL2.GL_CW);
 			glut.glutSolidTeapot(AVATAR_RATIO);
 			gl.glFrontFace(GL2.GL_CCW);
+
 		}
 		gl.glPopMatrix();
 	}
@@ -68,26 +74,6 @@ public class Avatar {
 
 		pos[0] += front[0] * direction;
 		pos[2] += front[2] * direction;
-		pos[1] = terrain.altitude(pos[0] + terrain.getOffset()[0], pos[2]
-				+ terrain.getOffset()[1]);
-	}
-
-	public void xmove(double direction) {
-		if (Math.abs(pos[0] + front[0] * direction) >= terrain.getOffset()[0]
-				|| Math.abs(pos[2] + front[2] * direction) >= terrain
-						.getOffset()[1])
-			return;
-		pos[0] += direction;
-		pos[1] = terrain.altitude(pos[0] + terrain.getOffset()[0], pos[2]
-				+ terrain.getOffset()[1]);
-	}
-
-	public void zmove(double direction) {
-		if (Math.abs(pos[0] + front[0] * direction) >= terrain.getOffset()[0]
-				|| Math.abs(pos[2] + front[2] * direction) >= terrain
-						.getOffset()[1])
-			return;
-		pos[2] += direction;
 		pos[1] = terrain.altitude(pos[0] + terrain.getOffset()[0], pos[2]
 				+ terrain.getOffset()[1]);
 	}
@@ -135,5 +121,9 @@ public class Avatar {
 		gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_DIFFUSE, lightDiff, 0);
 		gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_SPECULAR, lightSpec, 0);
 		gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT, lightAmb, 0);
+	}
+	
+	public boolean onTorch(){
+		return onTorch;
 	}
 }

@@ -60,7 +60,7 @@ public class Road {
 	ArrayList<ArrayList<CrossSection>> strips = null;
 	private double[][] crossSec = null;
 	private ArrayList<double[]> spine = null;
-	public int SLICES = 20;
+	public int SLICES = 15;
 
 
 	/**
@@ -84,7 +84,7 @@ public class Road {
 				{ myWidth / 2, 0, 0, 1 } };
 		this.createSpine();
 		this.createCrossSectionOnSpine();
-		this.genStrips();
+//		this.genStrips();
 	}
 
 	/**
@@ -212,6 +212,7 @@ public class Road {
 			double nt = 1 - t;
 			double p[] = { nt * p1[0] + t * p2[0], 0, nt * p1[2] + t * p2[2] };
 			p = inbound(p);
+			
 			p[1] = terrain.altitude(p[0] + terrain.X_OFFSET, p[2]
 					+ terrain.Z_OFFSET);
 			points.add(p);
@@ -380,7 +381,7 @@ public class Road {
 	public void draw(GL2 gl) {
 
 		gl.glPushMatrix();
-	//	gl.glPolygonMode(GL2.GL_FRONT_AND_BACK, GL2.GL_LINE);
+//		gl.glPolygonMode(GL2.GL_FRONT_AND_BACK, GL2.GL_LINE);
 		gl.glPolygonOffset(-1, -1);
 		gl.glActiveTexture(GL.GL_TEXTURE2);
 		MyTexture myTexture = new MyTexture(gl, "road.bmp", "bmp", false);
@@ -390,7 +391,7 @@ public class Road {
 			for (int i = 0; i < cs.size() - 1; i++) {
 				gl.glBindTexture(GL2.GL_TEXTURE_2D, myTexture.getTextureId());
 				gl.glTexEnvi(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE,
-						GL2.GL_MODULATE);
+						GL2.GL_REPLACE);
 				CrossSection ms0 = cs.get(i);
 				CrossSection ms1 = cs.get(i + 1);
 
@@ -422,8 +423,8 @@ public class Road {
 				}
 				gl.glEnd();
 			}
-		}
-*/
+		}*/
+
 		for(int i = 0; i < crossSecVertices.size()-1; i++){
 			gl.glBindTexture(GL2.GL_TEXTURE_2D, myTexture.getTextureId());
 			gl.glTexEnvi(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE,

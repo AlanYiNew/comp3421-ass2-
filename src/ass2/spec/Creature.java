@@ -17,11 +17,15 @@ public class Creature {
 	private FloatBuffer textureData;
 	private final int FloatBYTE = 4;
 
-	
-	private int shaderprogram;
+	private int textureLoc;
+	private int lightLoc1;
+	private int lightLoc2;
+	private int shaderprogram1;
+	private int shaderprogram2;
 	
 	private static final String VERTEX_SHADER = "vertex_shader.glsl";
-    private static final String FRAGMENT_SHADER = "fragment_shader.glsl";
+    private static final String FRAGMENT_SHADER1 = "fragment_shader.glsl";
+    private static final String FRAGMENT_SHADER2 = "fragment_no_shader.glsl";
 	
 	public void init(GL2 gl) {
 		creaturePosition = new float[] { 
@@ -82,11 +86,17 @@ public class Creature {
 				0, -1f, 0
 		};
 		try{
-			shaderprogram = Shader.initShaders(gl,VERTEX_SHADER,FRAGMENT_SHADER);
+			shaderprogram1 = Shader.initShaders(gl,VERTEX_SHADER,FRAGMENT_SHADER1);
+			shaderprogram2 = Shader.initShaders(gl,VERTEX_SHADER,FRAGMENT_SHADER2);
 		}catch(Exception e){
 		    e.printStackTrace();       	
 		}
-
+		
+		textureLoc = gl.glGetUniformLocation(shaderprogram1,"color");
+		lightLoc1 = gl.glGetUniformLocation(shaderprogram1,"light");
+		lightLoc2 = gl.glGetUniformLocation(shaderprogram2,"light");
+		
+//		System.out.println(textureLoc);
 		creatureTexture = new float[] { 0, 0, 1, 0, 1, 1, 0, 1 };
 
 		posData = Buffers.newDirectFloatBuffer(creaturePosition);
@@ -111,10 +121,11 @@ public class Creature {
 				creatureTexture.length * FloatBYTE, textureData);
 	}
 
-	public void draw(GL2 gl,int textureArray[]) {
+	public void draw(GL2 gl,int textureArray[], int lightMode) {
 		
 		// Bind the buffer we want to use
-				gl.glUseProgram(shaderprogram);
+				gl.glUseProgram(shaderprogram1);
+				
 				gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, bufferIds[0]);
 
 				// Enable three vertex arrays: coordinates, normal and texture.
@@ -135,16 +146,23 @@ public class Creature {
 				//specify the pointer to refer to the texture data in GL_ARRAY_BUFFER
 				gl.glTexCoordPointer(2, GL2.GL_FLOAT, 0,
 						(creaturePosition.length + creatureNormal.length) * FloatBYTE);
-				gl.glEnable(GL2.GL_TEXTURE_2D);
+				
+				gl.glUniform1i(textureLoc,0);
+				gl.glUniform1i(lightLoc1,lightMode);
+
 				gl.glBindTexture(GL2.GL_TEXTURE_2D, textureArray[1]);
 				gl.glDrawArrays(GL2.GL_QUADS, 0, 4);
+				
+				gl.glUseProgram(shaderprogram2);
+				gl.glUniform1i(lightLoc2,lightMode);
+				
 				gl.glBindTexture(GL2.GL_TEXTURE_2D, textureArray[0]);
-				gl.glDisable(GL2.GL_TEXTURE_2D);
 				gl.glDrawArrays(GL2.GL_QUADS, 4, 20);
+				
 				gl.glDisableClientState(GL2.GL_VERTEX_ARRAY);
 				gl.glDisableClientState(GL2.GL_NORMAL_ARRAY);
 				gl.glDisableClientState(GL2.GL_TEXTURE_COORD_ARRAY);
-
+				
 				gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);
 				gl.glUseProgram(0);
 				

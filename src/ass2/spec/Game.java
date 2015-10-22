@@ -105,9 +105,14 @@ public class Game extends JFrame implements GLEventListener, KeyListener {
 		camera.setCamera(gl);
 		light.setUpLight(gl);
 		light.draw(gl);
+		int lightMode = 0;
+		if(teapot.onTorch())
+			lightMode = 1;
+		
 		if (camera.getMode() != Camera.cameraMode.FIRST)
 			teapot.draw(gl);
-		myTerrain.draw(gl, data);
+		
+		myTerrain.draw(gl, data,lightMode);
 		rain.display(gl);
 	}
 
@@ -121,7 +126,7 @@ public class Game extends JFrame implements GLEventListener, KeyListener {
 	public void init(GLAutoDrawable drawable) {
 		GL2 gl = drawable.getGL().getGL2();
 		gl.glEnable(GL2.GL_LIGHTING);
-		gl.glEnable(GL2.GL_LIGHT0);
+
 		gl.glEnable(GL2.GL_DEPTH_TEST);
 		gl.glEnable(GL2.GL_POLYGON_OFFSET_POINT);
 		gl.glEnable(GL2.GL_POLYGON_OFFSET_LINE);
@@ -134,9 +139,7 @@ public class Game extends JFrame implements GLEventListener, KeyListener {
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
 			int height) {
-		GL2 gl = drawable.getGL().getGL2();
 		camera.setAspect(1.0f * width / height);
-		myTerrain.init(gl);
 	}
 
 	@Override
@@ -187,6 +190,7 @@ public class Game extends JFrame implements GLEventListener, KeyListener {
 			break;
 		case KeyEvent.VK_T:
 			teapot.toggleTorch();
+			light.hideSun();
 			break;
 		case KeyEvent.VK_V:
 			camera.changeMode();
@@ -195,7 +199,8 @@ public class Game extends JFrame implements GLEventListener, KeyListener {
 			rain.rainChange();
 			break;
 		case KeyEvent.VK_M:
-			light.toggleSun();
+			if(!teapot.onTorch())
+				light.toggleSun();
 			break;
 		}
 	}

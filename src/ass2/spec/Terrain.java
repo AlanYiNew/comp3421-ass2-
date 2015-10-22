@@ -205,7 +205,7 @@ public class Terrain {
 		myRoads.add(road);
 	}
 
-	public void draw(GL2 gl, TextureData data) {
+	public void draw(GL2 gl, TextureData data, int lightMode) {
 		gl.glEnable(GL2.GL_TEXTURE_2D);
 		
 		
@@ -254,7 +254,7 @@ public class Terrain {
 		gl.glPushMatrix();
 		gl.glTranslated(2.5,this.altitude(2.5 + X_OFFSET,2.5 + Z_OFFSET ),2.5);
 		creature.init(gl);
-		creature.draw(gl,textureArray);
+		creature.draw(gl,textureArray,lightMode);
 		gl.glPopMatrix();
 		
 		for (Road r : myRoads) {
@@ -265,12 +265,12 @@ public class Terrain {
 	// Must be called in the init state
 	public void init(GL2 gl) {
 
-
 		// Texture setting
 		myTexture_branch = new MyTexture(gl, "branch.jpg", "jpg",true);
-		myTexture_grass = new MyTexture(gl, "grass.jpg", "jpg", true);
 		myTexture_creature = new MyTexture(gl, "creature.png", "png", true);
+		myTexture_grass = new MyTexture(gl, "grass.jpg", "jpg", true);
 		
+		System.out.println(myTexture_grass.getTextureId());
 		//The third argument should be GL_MODULATE if light is needed in the scene
 		gl.glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE,
 				GL2.GL_MODULATE);
