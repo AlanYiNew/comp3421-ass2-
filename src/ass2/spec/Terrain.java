@@ -70,10 +70,7 @@ public class Terrain {
 		bufferIds = new int[1];
 		X_OFFSET = (width - 1.0f)/2;
 		Z_OFFSET = (depth - 1.0f)/2;
-		creatures = new ArrayList<Creature>();
-		for (int i = 0; i < width/3; i++){
-			creatures.add(new Creature());
-		}
+		
 	}
 
 	public Terrain(Dimension size) {
@@ -257,19 +254,9 @@ public class Terrain {
 		gl.glDisable(GL2.GL_TEXTURE_2D);	
 		
 		textureArray[1] = myTexture_creature.getTextureId();
-		Random rand = new Random();
-		float maxw = (float) (mySize.getWidth()/2);
-		float minw = (float) (-mySize.getWidth()/2);
-		float maxl = (float) (mySize.getHeight()/2);
-		float minl = (float) (-mySize.getHeight()/2);
+
 		for (Creature i :creatures){
-			gl.glPushMatrix();
-			float x = rand.nextFloat() * (maxw - minw) + minw;
-			float z = rand.nextFloat() * (maxl - minl) + minl;
-			float y = (float) this.altitude(x+X_OFFSET, z+Z_OFFSET);
-			gl.glTranslated(x,y,z);
 			i.draw(gl,textureArray,lightMode);
-			gl.glPopMatrix();
 		}
 		
 		for (Road r : myRoads) {
@@ -403,6 +390,34 @@ public class Terrain {
 				GL2.GL_ARRAY_BUFFER,
 				(terrainPositions.length + terrainNormals.length) * FloatBYTE,
 				textureCoordinates.length * FloatBYTE, textureData);
+		
+		int width = (int) (X_OFFSET * 2);
+		
+		int numcre = width/3;
+		numcre = numcre > 3 ? 3 : numcre;
+		Random rand = new Random();
+		float minx = 0, maxx = X_OFFSET * 2, minz = 0, maxz = Z_OFFSET * 2;
+		minx += (maxx)/20;
+		maxx -= (maxx)/20;
+		
+		minz += (maxz)/20;
+		maxz -= (maxz)/20;
+		
+		System.out.println("minx,maxx " + minx + " " + maxx);
+		System.out.println("minx,maxx " + minx + " " + maxx);
+		
+		creatures = new ArrayList<Creature>();
+		for (int i = 0; i < numcre ; i++){
+			float x = rand.nextFloat() * (maxx-minx) + minx;
+			float z = rand.nextFloat() * (maxz-minz) + minz;
+			
+			System.out.println("x,y,z " + x + " " + altitude(x,z) + " " + z);	
+			
+			float y = (float) this.altitude(x,z);
+			
+			float angle = rand.nextFloat() * 360;
+			creatures.add(new Creature(x-X_OFFSET,y,z-Z_OFFSET,angle));
+		}
 		
 		for (Creature i:creatures){
 			i.init(gl);

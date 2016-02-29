@@ -1,3 +1,4 @@
+//shader with texture
 #version 130
 
 in vec3 normal;
@@ -32,7 +33,7 @@ void main (void) {
     
 	if (NdotL > 0.0) {
 		NdotR = max(dot(R,dirToView ),0.0);
-		specular = gl_FrontMaterial.specular * gl_LightSource[light].specular * pow(NdotHV,gl_FrontMaterial.shininess);
+		specular = gl_FrontMaterial.specular * gl_LightSource[light].specular * pow(NdotR,gl_FrontMaterial.shininess);
 	    
 	}
 	
